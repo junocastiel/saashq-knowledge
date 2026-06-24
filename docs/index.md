@@ -8,7 +8,7 @@ The goal is not to learn HTML. The goal is to record what was configured, why it
 
 - [Cloudflare Email Routing](cloudflare-email-routing.md): how to catch email for `mdm.saashq.in` and forward it without hosting a mail server.
 - [Cloudflare Tunnel Local Preview](cloudflare-tunnel-local-preview.md): how to expose a local website through a temporary Cloudflare Tunnel.
-- [Fleet MDM](fleet-mdm.md): how the Fleet MDM setup should be structured for Android Enterprise device management.
+- [Fleet MDM](fleet-mdm.md): how Fleet MDM is running on macOS with Docker or OrbStack, Cloudflare Tunnel, and Android Enterprise.
 
 ## How to Add a Page
 
