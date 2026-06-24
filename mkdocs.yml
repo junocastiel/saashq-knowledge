@@ -33,5 +33,6 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Cloudflare Email Routing: cloudflare-email-routing.md
+  - Cloudflare Tunnel Local Preview: cloudflare-tunnel-local-preview.md
   - Fleet MDM: fleet-mdm.md
   - Contribution Guide: page-template.md
