@@ -2,21 +2,24 @@
 
 This folder contains a MkDocs Material static knowledge website.
 
+The site is intentionally small right now:
+
+- Cloudflare Email Routing
+- Fleet MDM
+- Contribution Guide and Page Template
+
 ## Edit Content
 
 Write pages in Markdown under `docs/`.
 
-Common places:
-
-- `docs/execution-logs/` for completed technical work with evidence.
-- `docs/runbooks/` for repeatable procedures.
-- `docs/infrastructure/` for Cloudflare, VPS, DNS, hosting, and backup notes.
-- `docs/device-management/` for Android Enterprise, Fleet MDM, Headwind MDM, and device notes.
-- `docs/decisions/` for comparisons and final decisions.
-- `docs/troubleshooting/` for symptoms and fixes.
-- `docs/page-templates/` for reusable page templates.
-
 Put screenshots under `docs/assets/<topic-name>/`.
+
+For a new page:
+
+1. Copy `docs/page-template.md`.
+2. Save it under `docs/` with a short lowercase filename.
+3. Add it to `nav` in `mkdocs.yml`.
+4. Run the strict build.
 
 ## Local Preview
 

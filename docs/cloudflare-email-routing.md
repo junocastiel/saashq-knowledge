@@ -1,22 +1,29 @@
-# Cloudflare Email Routing for Fleet MDM
+# Cloudflare Email Routing
 
 Date: 2026-06-24  
 Status: Working  
-System: Cloudflare Email Routing, Cloudflare Workers, Fleet MDM  
+System: Cloudflare Email Routing, Cloudflare Workers  
 Sensitive data: Masked
 
 ## Goal
 
 Route any email address ending in `@mdm.saashq.in` to `masked-destination@gmail.com` without hosting an email server.
 
-This is useful for Fleet MDM because the admin or enrollment-related email address can live under the MDM subdomain while the actual mailbox remains a normal Gmail inbox.
+This pattern is useful when a developer or tester needs disposable, traceable email addresses under one subdomain while all messages still land in a normal inbox.
+
+Example use cases:
+
+- Test signup flows with unique addresses such as `test-run-123@mdm.saashq.in`.
+- Capture emails from staging systems without creating real mailboxes.
+- Give each integration test, QA run, or sandbox service its own address.
+- Route product/vendor notifications from a technical subdomain to one monitored inbox.
 
 ## Final Result
 
 - Wildcard behavior: `*@mdm.saashq.in` forwards to `masked-destination@gmail.com`.
 - Exact route kept active: `admin@mdm.saashq.in`.
 - Email Worker: `mdm-subdomain-catchall-forwarder`.
-- Verification address: `fleet-wildcard-1782314050092@mdm.saashq.in`.
+- Verification address: `test-run-1782314050092@mdm.saashq.in`.
 - Cloudflare Activity Log result: `Handled` and `Forwarded`.
 
 !!! warning "Cloudflare subdomain catch-all limitation"
@@ -31,7 +38,7 @@ This is useful for Fleet MDM because the admin or enrollment-related email addre
 5. The exact route `admin@mdm.saashq.in` is active.
 6. The catch-all rule is active and points to `mdm-subdomain-catchall-forwarder`.
 
-![Routing rules showing catch-all worker and admin route](../assets/mdm-email-routing/routing-rules-redacted.png)
+![Routing rules showing catch-all worker and admin route](assets/mdm-email-routing/routing-rules-redacted.png)
 
 ## Email Worker
 
@@ -52,39 +59,33 @@ export default {
 };
 ```
 
-![Email Worker editor with destination masked](../assets/mdm-email-routing/worker-editor-redacted.png)
+![Email Worker editor with destination masked](assets/mdm-email-routing/worker-editor-redacted.png)
 
 ## Verification
 
 Test email sent to:
 
 ```text
-fleet-wildcard-1782314050092@mdm.saashq.in
+test-run-1782314050092@mdm.saashq.in
 ```
 
 Cloudflare Activity Log showed:
 
 - Subject: `Cloudflare mdm wildcard test 2026-06-24T15:14:10.093Z`
-- Recipient: `fleet-wildcard-1782314050092@mdm.saashq.in`
+- Recipient: `test-run-1782314050092@mdm.saashq.in`
 - Result: `Handled`
 - Result: `Forwarded`
 
-![Activity Log showing wildcard test handled and forwarded](../assets/mdm-email-routing/activity-log-redacted.png)
+![Activity Log showing wildcard test handled and forwarded](assets/mdm-email-routing/activity-log-redacted.png)
 
 Gmail search also showed the matching test conversation in the destination mailbox.
 
-![Gmail verification search result](../assets/mdm-email-routing/gmail-verification-redacted.png)
+![Gmail verification search result](assets/mdm-email-routing/gmail-verification-redacted.png)
 
 ## Future Checklist
 
-- Use `admin@mdm.saashq.in` or another address ending in `@mdm.saashq.in` for Fleet MDM.
+- Use addresses like `qa-run-001@mdm.saashq.in`, `staging-alerts@mdm.saashq.in`, or `vendor-test@mdm.saashq.in` when a tool needs a unique inbox address.
 - If mail stops arriving, check Cloudflare Email Routing -> Activity Log first.
 - If Activity Log shows `Handled` but not `Forwarded`, inspect the Email Worker and destination verification.
 - If Activity Log has no entry, check DNS/subdomain status under Email Routing settings.
 - Keep real mailbox usernames out of screenshots and public docs.
-
-## Maintenance Notes
-
-- Edit this page as Markdown, not HTML.
-- Add future screenshots under `docs/assets/mdm-email-routing/`.
-- Keep screenshots redacted before committing or publishing.

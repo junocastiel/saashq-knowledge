@@ -1,5 +1,5 @@
 site_name: Mukesh Technical Knowledge Base
-site_description: Static documentation for technical execution notes, runbooks, decisions, and troubleshooting.
+site_description: Static Markdown notes for SaasHQ technical setup and operations.
 site_url: https://blog.saashq.in/
 
 theme:
@@ -32,18 +32,6 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Execution Logs:
-      - Cloudflare Email Routing for Fleet MDM: execution-logs/cloudflare-mdm-email-routing.md
-  - Runbooks:
-      - Overview: runbooks/index.md
-  - Infrastructure:
-      - Overview: infrastructure/index.md
-      - Cloudflare: infrastructure/cloudflare/index.md
-  - Device Management:
-      - Overview: device-management/index.md
-  - Decisions:
-      - Overview: decisions/index.md
-  - Troubleshooting:
-      - Overview: troubleshooting/index.md
-  - Page Templates:
-      - Execution Note Template: page-templates/execution-note-template.md
+  - Cloudflare Email Routing: cloudflare-email-routing.md
+  - Fleet MDM: fleet-mdm.md
+  - Contribution Guide: page-template.md

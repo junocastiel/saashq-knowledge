@@ -1,29 +1,26 @@
-# Technical Knowledge Base
+# SaasHQ Knowledge Base
 
-This site is for preserving technical execution notes, repeatable runbooks, infrastructure decisions, and troubleshooting references.
+This site keeps practical technical setup notes in Markdown.
 
-The goal is simple: write Markdown, add screenshots, publish a static site.
+The goal is not to learn HTML. The goal is to record what was configured, why it was configured, how to repeat it, and how to verify that it still works.
 
-## How to Add a New Page
+## Current Pages
 
-1. Copy the template from [Execution Note Template](page-templates/execution-note-template.md).
-2. Save the new file under the best category.
-3. Put screenshots under `docs/assets/<topic-name>/`.
-4. Link screenshots using normal Markdown image syntax.
-5. Build or publish the site.
+- [Cloudflare Email Routing](cloudflare-email-routing.md): how to catch email for `mdm.saashq.in` and forward it without hosting a mail server.
+- [Fleet MDM](fleet-mdm.md): how the Fleet MDM setup should be structured for Android Enterprise device management.
 
-## Categories
+## How to Add a Page
 
-| Category | Use for |
-| --- | --- |
-| Execution Logs | What was actually done, with evidence and screenshots. |
-| Runbooks | Repeatable procedures that can be followed later. |
-| Infrastructure | Cloudflare, VPS, DNS, tunnels, email, backup, and hosting notes. |
-| Device Management | Android Enterprise, Fleet MDM, Headwind MDM, Xiaomi device handling. |
-| Decisions | Comparisons, tradeoffs, and final choices. |
-| Troubleshooting | Symptoms, causes, fixes, and verification steps. |
-| Templates | Reusable page formats. |
+1. Copy [Contribution Guide and Page Template](page-template.md).
+2. Save it as a short lowercase file name under `docs/`, for example `docs/new-service-setup.md`.
+3. Put screenshots under `docs/assets/<page-name>/`.
+4. Add the page to `nav` in `mkdocs.yml`.
+5. Run `mkdocs build --strict`.
 
-## Current References
+## Writing Rules
 
-- [Cloudflare Email Routing for Fleet MDM](execution-logs/cloudflare-mdm-email-routing.md)
+- Keep one page focused on one setup or decision.
+- Prefer exact final configuration over long background explanation.
+- Include verification commands or screenshots.
+- Mask usernames, personal email addresses, tokens, account IDs, and phone numbers.
+- Use placeholders like `masked-destination@gmail.com` when the real value should not be public.
