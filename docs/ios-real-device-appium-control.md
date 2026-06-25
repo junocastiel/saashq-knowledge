@@ -350,7 +350,7 @@ On the iPhone, keep these temporary setup defaults:
 
 Start from the iPhone Settings app:
 
-![iPhone Settings root screen](assets/ios-real-device-appium-control/iphone-settings-root.png)
+![iPhone Settings root screen](assets/ios-real-device-appium-control/iphone-settings-root.png){ .iphone-screenshot }
 
 ### 9. Enable Developer Mode
 
@@ -362,11 +362,11 @@ Settings -> Privacy & Security -> Developer Mode
 
 Developer Mode appears near the bottom of `Privacy & Security`.
 
-![iPhone Privacy & Security Developer Mode row](assets/ios-real-device-appium-control/iphone-developer-mode-row.png)
+![iPhone Privacy & Security Developer Mode row](assets/ios-real-device-appium-control/iphone-developer-mode-row.png){ .iphone-screenshot }
 
 Open `Developer Mode`, turn it on, and restart the iPhone if iOS asks.
 
-![iPhone Developer Mode enabled](assets/ios-real-device-appium-control/iphone-developer-mode-detail.png)
+![iPhone Developer Mode enabled](assets/ios-real-device-appium-control/iphone-developer-mode-detail.png){ .iphone-screenshot }
 
 ### 10. Enable UI Automation
 
@@ -378,7 +378,7 @@ Settings -> Developer
 
 The `Developer` row appears in Settings after Developer Mode is available.
 
-![iPhone Settings Developer row](assets/ios-real-device-appium-control/iphone-settings-developer-row.png)
+![iPhone Settings Developer row](assets/ios-real-device-appium-control/iphone-settings-developer-row.png){ .iphone-screenshot }
 
 Turn on:
 
@@ -386,7 +386,7 @@ Turn on:
 Enable UI Automation
 ```
 
-![iPhone Developer settings showing Enable UI Automation](assets/ios-real-device-appium-control/iphone-developer-ui-automation.png)
+![iPhone Developer settings showing Enable UI Automation](assets/ios-real-device-appium-control/iphone-developer-ui-automation.png){ .iphone-screenshot }
 
 Why this is required:
 
@@ -409,19 +409,19 @@ After WebDriverAgent is installed for the first time, open:
 Settings -> General -> VPN & Device Management
 ```
 
-![iPhone General screen](assets/ios-real-device-appium-control/iphone-general.png)
+![iPhone General screen](assets/ios-real-device-appium-control/iphone-general.png){ .iphone-screenshot }
 
 Scroll to `VPN & Device Management`.
 
-![iPhone General VPN and Device Management row](assets/ios-real-device-appium-control/iphone-general-vpn-device-management.png)
+![iPhone General VPN and Device Management row](assets/ios-real-device-appium-control/iphone-general-vpn-device-management.png){ .iphone-screenshot }
 
 Open the developer app profile.
 
-![iPhone developer app profile](assets/ios-real-device-appium-control/iphone-device-management-profile.png)
+![iPhone developer app profile](assets/ios-real-device-appium-control/iphone-device-management-profile.png){ .iphone-screenshot }
 
 Trust the developer profile if iOS asks. A trusted WebDriverAgent profile looks like this:
 
-![iPhone WebDriverAgentRunner trusted and verified](assets/ios-real-device-appium-control/iphone-developer-app-trust.png)
+![iPhone WebDriverAgentRunner trusted and verified](assets/ios-real-device-appium-control/iphone-developer-app-trust.png){ .iphone-screenshot }
 
 ## WebDriverAgent Setup
 

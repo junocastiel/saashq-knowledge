@@ -1,0 +1,8 @@
+.md-typeset img.iphone-screenshot {
+  display: block;
+  width: min(100%, 420px);
+  height: auto;
+  margin: 1rem auto;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 8px;
+}

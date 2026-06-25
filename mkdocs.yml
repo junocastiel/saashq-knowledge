@@ -17,6 +17,9 @@ theme:
       primary: blue grey
       accent: blue
 
+extra_css:
+  - stylesheets/extra.css
+
 plugins:
   - search
 
