@@ -1,10 +1,10 @@
 # Control a Physical iPhone from macOS with Appium
 
-Date: 2026-06-25  
-Status: Verified locally  
-System: macOS, Xcode, Appium, XCUITest, WebDriverAgent, physical iPhone  
-Sensitive data: Masked  
-Last verified: 2026-06-25
+Date: 2026-06-25<br>
+Status: Verified locally<br>
+System: macOS, Xcode, Appium, XCUITest, WebDriverAgent, physical iPhone, Mobile Safari<br>
+Sensitive data: Masked<br>
+Last verified: 2026-06-26
 
 ## Goal
 
@@ -16,6 +16,7 @@ The working end state is:
 - Xcode has an Apple account, personal team, and Apple Development certificate.
 - WebDriverAgentRunner installs and runs on the iPhone.
 - Appium can take screenshots, read UI source, tap, swipe, type, open apps, and close sessions.
+- Appium can test websites in Mobile Safari by switching into the `com.apple.mobilesafari` web context.
 
 This guide assumes the engineer is using a Mac and iPhone for the first time.
 
@@ -30,6 +31,7 @@ You need:
 - An Apple ID that can be added to Xcode. A free personal team is enough for local testing.
 - A physical iPhone, USB cable, and the phone passcode.
 - Developer Mode enabled on the iPhone.
+- Safari `Web Inspector` enabled on the iPhone if you plan to test websites in Mobile Safari.
 - The iPhone kept unlocked during setup and first verification.
 - Terminal access for Homebrew, Node.js, Appium, and diagnostic commands.
 
@@ -43,11 +45,12 @@ Follow the setup in this order:
 2. Install Homebrew, Node.js, Appium, and iOS diagnostic tools.
 3. Add an Apple account and create an Apple Development certificate in Xcode.
 4. Connect the iPhone, trust the Mac, enable Developer Mode, and enable UI Automation.
-5. Configure and sign WebDriverAgentRunner.
-6. Start Appium on localhost.
-7. Create a real-device session.
-8. Verify screenshot, UI source, tap, Home, app launch, and clean session deletion.
-9. Run the reconnect checklist after unplug, restart, or long idle periods.
+5. Enable Safari Web Inspector if you will test websites in Mobile Safari.
+6. Configure and sign WebDriverAgentRunner.
+7. Start Appium on localhost.
+8. Create a real-device session.
+9. Verify screenshot, UI source, tap, Home, app launch, Safari web context, and clean session deletion.
+10. Run the reconnect checklist after unplug, restart, or long idle periods.
 
 Treat each phase as a gate. If a phase fails, fix that phase before moving forward.
 
@@ -72,6 +75,7 @@ Treat each phase as a gate. If a phase fails, fix that phase before moving forwa
 - **Entitlement**: A signed app permission. Xcode embeds entitlements into the signed app when needed.
 - **Developer profile on iPhone**: The iPhone-side trust entry created when a development-signed app is installed.
 - **Developer Mode**: iOS setting required on iOS 16 and later before development-signed apps can run reliably.
+- **Safari Web Inspector**: iPhone Safari setting that allows the Mac-side Web Inspector protocol to see Safari tabs. Appium needs it for Mobile Safari web-context testing.
 - **WebDriverAgent**: The XCTest server app that Appium installs on the phone.
 - **UDID**: The unique device identifier. Treat it as sensitive and mask it in public docs.
 
@@ -100,7 +104,8 @@ Exact versions can differ. The important part is that Xcode detects the phone, A
 - Node.js: installed through Homebrew or another trusted package manager.
 - Appium: installed globally with `npm`.
 - Appium driver: `xcuitest`.
-- iPhone: trusted over USB, Developer Mode enabled.
+- iPhone: trusted over USB, Developer Mode enabled, UI Automation enabled.
+- Mobile Safari web testing: Safari Web Inspector enabled.
 - WDA bundle ID: use your own unique value, for example `com.example.WebDriverAgentRunner`.
 
 ## Mac Setup
@@ -451,7 +456,50 @@ This setting is different from `Developer Mode`:
 - `Enable UI Automation` allows XCTest automation to interact with the visible UI.
 - For normal Appium real-device use, both should be enabled.
 
-### 11. Trust the WebDriverAgent developer app
+### 11. Enable Safari Web Inspector
+
+This step is required only if you want Appium to test websites in Mobile Safari. It is separate from `Enable UI Automation`.
+
+Open:
+
+```text
+Settings -> Safari
+```
+
+Scroll until the `Safari` row is visible.
+
+![iPhone Settings Safari row](assets/ios-real-device-appium-control/iphone-settings-safari-row.png){ .iphone-screenshot }
+
+Open `Safari`.
+
+![iPhone Safari settings screen](assets/ios-real-device-appium-control/iphone-safari-settings-screen.png){ .iphone-screenshot }
+
+Open:
+
+```text
+Advanced
+```
+
+![iPhone Safari Advanced row](assets/ios-real-device-appium-control/iphone-safari-advanced-row.png){ .iphone-screenshot }
+
+Turn on:
+
+```text
+Web Inspector
+```
+
+Leave `JavaScript` enabled.
+
+![iPhone Safari Web Inspector enabled](assets/ios-real-device-appium-control/iphone-safari-web-inspector-enabled.png){ .iphone-screenshot }
+
+Why this is required:
+
+- Native Appium commands use WebDriverAgent and XCTest.
+- Mobile Safari web commands use Safari's Web Inspector connection so Appium can see web pages, DOM source, CSS selectors, and page titles.
+- If `Web Inspector` is off, Safari may open, but Appium can fail with `The remote debugger did not return any connected web applications`.
+- `Remote Automation` is not required for the Appium/XCUITest flow verified here. Keep it off unless a different Safari automation stack explicitly requires it.
+
+### 12. Trust the WebDriverAgent developer app
 
 After WebDriverAgent is installed for the first time, open:
 
@@ -475,7 +523,7 @@ Trust the developer profile if iOS asks. A trusted WebDriverAgent profile looks 
 
 ## WebDriverAgent Setup
 
-### 12. Locate WebDriverAgent
+### 13. Locate WebDriverAgent
 
 After installing the XCUITest driver, WebDriverAgent is inside the Appium driver folder.
 
@@ -499,7 +547,7 @@ open "$(find ~/.appium -path '*appium-webdriveragent/WebDriverAgent.xcodeproj' -
 
 ![WebDriverAgent project open in Xcode](assets/ios-real-device-appium-control/xcode-wda-project.png)
 
-### 13. Understand the signing failure
+### 14. Understand the signing failure
 
 If Xcode shows this error, the project has no development team selected:
 
@@ -585,7 +633,7 @@ Stop and fix signing first if any checklist item fails. Reinstalling Appium or c
 
 ## Start Appium
 
-### 14. Start the Appium server
+### 15. Start the Appium server
 
 Run:
 
@@ -621,7 +669,7 @@ Expected output shape:
 }
 ```
 
-### 15. Create a real-device session
+### 16. Create a real-device session
 
 Replace placeholders before running:
 
@@ -695,7 +743,7 @@ SID="<appium-session-id>"
 
 ## Verify Control
 
-### 16. Take a screenshot
+### 17. Take a screenshot
 
 ```bash
 curl -sS "http://127.0.0.1:4723/session/$SID/screenshot" \
@@ -711,7 +759,7 @@ Expected output:
 iphone-appium-screenshot.png: PNG image data
 ```
 
-### 17. Read UI source
+### 18. Read UI source
 
 ```bash
 curl -sS "http://127.0.0.1:4723/session/$SID/source" \
@@ -727,7 +775,7 @@ Expected output shape:
 }
 ```
 
-### 18. Tap a harmless coordinate
+### 19. Tap a harmless coordinate
 
 This example taps near the center of the screen. Use it only on a harmless screen such as Settings.
 
@@ -755,7 +803,7 @@ Expected output:
 {"value":null}
 ```
 
-### 19. Press Home
+### 20. Press Home
 
 ```bash
 curl -sS -X POST "http://127.0.0.1:4723/session/$SID/execute/sync" \
@@ -769,7 +817,7 @@ Expected output:
 {"value":null}
 ```
 
-### 20. Open Settings again
+### 21. Open Settings again
 
 ```bash
 curl -sS -X POST "http://127.0.0.1:4723/session/$SID/appium/device/activate_app" \
@@ -783,7 +831,7 @@ Expected output:
 {"value":null}
 ```
 
-### 21. End the session
+### 22. End the session
 
 Always delete the Appium session when finished:
 
@@ -799,6 +847,262 @@ Expected output:
 
 Stop the Appium server with `Ctrl+C`.
 
+## Test Websites in Safari
+
+After native iPhone control works, test Mobile Safari as a separate web flow. Do not debug Safari web testing until the native screenshot and source checks above already pass.
+
+### 23. Create a Safari session
+
+For a pure Safari session, many examples use `browserName: "Safari"`. On a physical iPhone, a more explicit and reliable pattern is:
+
+- launch `com.apple.mobilesafari`,
+- request the full context list,
+- select the context whose `bundleId` is `com.apple.mobilesafari`,
+- switch into that context before using web commands.
+
+This avoids accidentally attaching to a non-Safari web context such as WebDriverAgent's local health page.
+
+Replace placeholders before running:
+
+- `<device-name>`
+- `<ios-version>`
+- `<device-udid>`
+- `<team-id>`
+- `<unique-wda-bundle-id>`
+
+```bash
+curl -sS -X POST http://127.0.0.1:4723/session \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "capabilities": {
+      "alwaysMatch": {
+        "platformName": "iOS",
+        "appium:automationName": "XCUITest",
+        "appium:deviceName": "<device-name>",
+        "appium:platformVersion": "<ios-version>",
+        "appium:udid": "<device-udid>",
+        "appium:bundleId": "com.apple.mobilesafari",
+        "appium:initialDeeplinkUrl": "https://example.com/",
+        "appium:xcodeOrgId": "<team-id>",
+        "appium:xcodeSigningId": "Apple Development",
+        "appium:updatedWDABundleId": "<unique-wda-bundle-id>",
+        "appium:includeSafariInWebviews": true,
+        "appium:fullContextList": true,
+        "appium:additionalWebviewBundleIds": ["com.apple.mobilesafari"],
+        "appium:webviewConnectTimeout": 60000,
+        "appium:webviewConnectRetries": 60,
+        "appium:wdaLaunchTimeout": 120000,
+        "appium:newCommandTimeout": 120,
+        "appium:safariIgnoreFraudWarning": true
+      },
+      "firstMatch": [{}]
+    }
+  }'
+```
+
+Expected output shape:
+
+```json
+{
+  "value": {
+    "sessionId": "<appium-session-id>",
+    "capabilities": {
+      "bundleId": "com.apple.mobilesafari"
+    }
+  }
+}
+```
+
+Save the session ID:
+
+```bash
+SID="<appium-session-id>"
+BASE="http://127.0.0.1:4723"
+export ELEMENT_KEY="element-6066-11e4-a52e-4f735466cecf"
+```
+
+### 24. Switch to the Safari web context
+
+List contexts:
+
+```bash
+curl -sS "$BASE/session/$SID/contexts" | python3 -m json.tool
+```
+
+Expected output shape:
+
+```json
+{
+  "value": [
+    {
+      "id": "NATIVE_APP"
+    },
+    {
+      "id": "WEBVIEW_661.1",
+      "title": "Example Domain",
+      "url": "https://example.com/",
+      "bundleId": "com.apple.mobilesafari"
+    }
+  ]
+}
+```
+
+Pick the Mobile Safari web context:
+
+```bash
+WEBCTX="$(
+  curl -sS "$BASE/session/$SID/contexts" |
+    python3 -c 'import sys,json; data=json.load(sys.stdin)["value"]; print(next(c["id"] for c in data if c.get("bundleId") == "com.apple.mobilesafari"))'
+)"
+
+curl -sS -X POST "$BASE/session/$SID/context" \
+  -H 'Content-Type: application/json' \
+  -d "{\"name\":\"$WEBCTX\"}"
+```
+
+Expected output:
+
+```json
+{"value":null}
+```
+
+Verify the current context:
+
+```bash
+curl -sS "$BASE/session/$SID/context"
+```
+
+Expected output shape:
+
+```json
+{"value":"WEBVIEW_661.1"}
+```
+
+### 25. Verify navigation, title, and source
+
+Navigate to a known page:
+
+```bash
+curl -sS -X POST "$BASE/session/$SID/url" \
+  -H 'Content-Type: application/json' \
+  -d '{"url":"https://example.com/?appium-safari-web-test=1"}'
+```
+
+Read the page title:
+
+```bash
+curl -sS "$BASE/session/$SID/title"
+```
+
+Expected output:
+
+```json
+{"value":"Example Domain"}
+```
+
+Check that the web source is readable:
+
+```bash
+curl -sS "$BASE/session/$SID/source" \
+  | python3 -c 'import sys,json; print("Example Domain" in json.load(sys.stdin)["value"])'
+```
+
+Expected output:
+
+```text
+True
+```
+
+Capture a Safari screenshot:
+
+```bash
+curl -sS "$BASE/session/$SID/screenshot" \
+  | python3 -c 'import sys,json,base64; print(json.load(sys.stdin)["value"])' \
+  | base64 --decode > iphone-safari-example.png
+
+file iphone-safari-example.png
+```
+
+Expected output:
+
+```text
+iphone-safari-example.png: PNG image data
+```
+
+Verified Safari screenshot:
+
+![iPhone Safari Example Domain page controlled by Appium](assets/ios-real-device-appium-control/iphone-safari-web-test-example-success.png){ .iphone-screenshot }
+
+### 26. Verify CSS selectors, typing, and click
+
+Open Selenium's public test form:
+
+```bash
+curl -sS -X POST "$BASE/session/$SID/url" \
+  -H 'Content-Type: application/json' \
+  -d '{"url":"https://www.selenium.dev/selenium/web/web-form.html"}'
+```
+
+Find the text input by CSS selector:
+
+```bash
+INPUT_ID="$(
+  curl -sS -X POST "$BASE/session/$SID/element" \
+    -H 'Content-Type: application/json' \
+    -d '{"using":"css selector","value":"input[name=\"my-text\"]"}' |
+    python3 -c 'import sys,json,os; value=json.load(sys.stdin)["value"]; print(value[os.environ["ELEMENT_KEY"]])'
+)"
+```
+
+Type into the field:
+
+```bash
+curl -sS -X POST "$BASE/session/$SID/element/$INPUT_ID/value" \
+  -H 'Content-Type: application/json' \
+  -d '{"text":"Appium Safari works","value":["A","p","p","i","u","m"," ","S","a","f","a","r","i"," ","w","o","r","k","s"]}'
+```
+
+Find and click the submit button:
+
+```bash
+BUTTON_ID="$(
+  curl -sS -X POST "$BASE/session/$SID/element" \
+    -H 'Content-Type: application/json' \
+    -d '{"using":"css selector","value":"button"}' |
+    python3 -c 'import sys,json,os; value=json.load(sys.stdin)["value"]; print(value[os.environ["ELEMENT_KEY"]])'
+)"
+
+curl -sS -X POST "$BASE/session/$SID/element/$BUTTON_ID/click" \
+  -H 'Content-Type: application/json' \
+  -d '{}'
+```
+
+Verify the submitted URL:
+
+```bash
+curl -sS "$BASE/session/$SID/url"
+```
+
+Expected output shape:
+
+```json
+{
+  "value": "https://www.selenium.dev/selenium/web/submitted-form.html?my-text=Appium+Safari+works..."
+}
+```
+
+Verified form page and submit result:
+
+![iPhone Safari Selenium web form before Appium typing](assets/ios-real-device-appium-control/iphone-safari-web-test-form-before-type.png){ .iphone-screenshot }
+
+![iPhone Safari Selenium web form submitted by Appium](assets/ios-real-device-appium-control/iphone-safari-web-test-form-submitted.png){ .iphone-screenshot }
+
+End the Safari session:
+
+```bash
+curl -sS -X DELETE "$BASE/session/$SID"
+```
+
 ## Reconnect, Restart, and Daily Use
 
 After the first successful setup, do not repeat the full Xcode signing and iPhone trust flow every day. Separate the one-time setup from the repeat workflow.
@@ -807,6 +1111,7 @@ What persists:
 
 - The iPhone's `Trust This Computer` decision normally survives unplug, replug, Mac restart, and iPhone restart.
 - The trusted Apple Development profile normally survives unplug, replug, Mac restart, and iPhone restart.
+- Safari `Web Inspector` normally stays enabled unless you turn it off or reset Safari/developer settings.
 - The WebDriverAgent signing setup remains valid as long as the same Apple team, certificate, provisioning profile, and bundle identifier are used.
 
 What does not persist:
@@ -861,11 +1166,13 @@ Expected output shape:
 [Appium]   - xcuitest@...
 ```
 
-Create a new Appium session using the same capabilities from [Create a real-device session](#15-create-a-real-device-session). Save the returned session ID:
+Create a new Appium session using the same capabilities from [Create a real-device session](#16-create-a-real-device-session). Save the returned session ID:
 
 ```bash
 SID="<appium-session-id>"
 ```
+
+For Mobile Safari website testing, create the Safari session from [Create a Safari session](#23-create-a-safari-session) and switch to the Mobile Safari web context again after every fresh session.
 
 ### Known-good reconnect test
 
@@ -1034,12 +1341,15 @@ The setup is complete only when every item below is true:
 - The iPhone has trusted the Mac.
 - Developer Mode is enabled on the iPhone.
 - `Enable UI Automation` is enabled on the iPhone.
+- Safari `Web Inspector` is enabled if Mobile Safari website testing is required.
 - WebDriverAgentRunner has no red signing error in Xcode.
 - Appium starts on `http://127.0.0.1:4723`.
 - A real-device Appium session is created successfully.
 - Screenshot capture returns a PNG.
 - UI source returns XCTest XML.
 - A harmless tap or app launch changes the phone state.
+- For Safari testing, `/contexts` returns a `WEBVIEW_...` context whose `bundleId` is `com.apple.mobilesafari`.
+- For Safari testing, title/source, CSS selector lookup, typing, and click work in that web context.
 - The Appium session can be deleted cleanly.
 - A reconnect test passes after unplug/replug or restart.
 
@@ -1057,20 +1367,22 @@ If any item fails, use the troubleshooting table below from the first failed che
 | Appium hangs during a command | WDA or XCTest is stuck | Delete the session, stop Appium, unlock phone, restart Appium. |
 | Device disappears during test | USB instability | Use a known-good cable and avoid USB hubs during first setup. |
 | Xcode asks for iOS platform support | Missing Xcode device support | Let Xcode install required platform/device support components. |
+| Safari session fails with `The remote debugger did not return any connected web applications` | Safari Web Inspector is off, Safari has no debuggable page, or the web context is not ready | Turn on `Settings -> Safari -> Advanced -> Web Inspector`, open Safari, and use `webviewConnectTimeout` only after Web Inspector is enabled. |
+| Safari web commands read `http://127.0.0.1:8100/health` instead of the website | Appium attached to WebDriverAgent's local web endpoint instead of Mobile Safari | Use `appium:fullContextList`, select the context whose `bundleId` is `com.apple.mobilesafari`, then switch to that context before web commands. |
 
 ## Security Notes
 
 - Do not publish UDIDs, serial numbers, Apple IDs, team IDs, or signing keys.
 - Do not share Apple account passwords, OTPs, private keys, `.p12` files, or recovery codes.
 - Use a unique WDA bundle ID per developer or machine.
-- Keep screenshots redacted before publishing.
+- Keep screenshots redacted before publishing, especially Settings root screens, Xcode signing screens, browser history, and address bars.
 - Prefer raw Appium first. Add WDIO, MCP, or other wrappers only after Appium itself is stable.
 
 ## References
 
 - [Appium Install Appium](https://appium.io/docs/en/latest/quickstart/install/): Appium installation and server startup.
 - [Appium XCUITest Device Preparation](https://appium.github.io/appium-xcuitest-driver/latest/preparation/real-device-config/): real-device requirements such as trusted device, Developer Mode, UI Automation, and provisioning.
-- [Appium XCUITest Capabilities](https://appium.github.io/appium-xcuitest-driver/latest/reference/capabilities/): `xcodeOrgId`, `xcodeSigningId`, `updatedWDABundleId`, and WDA timeout capabilities.
+- [Appium XCUITest Capabilities](https://appium.github.io/appium-xcuitest-driver/latest/reference/capabilities/): `xcodeOrgId`, `xcodeSigningId`, `updatedWDABundleId`, WDA timeout capabilities, and Safari web-context capabilities.
 - [Homebrew Installation](https://brew.sh/): Homebrew install command and shell setup.
 - [Apple Xcode](https://developer.apple.com/xcode/): Xcode toolchain overview.
 
