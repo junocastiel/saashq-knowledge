@@ -498,6 +498,10 @@ Use this fallback only if Appium capabilities are not enough or if you want Xcod
 12. Confirm the provisioning profile changes to an Xcode-managed profile.
 13. Confirm the signing certificate shows `Apple Development`.
 
+The target list and final signed state should look like this:
+
+![WebDriverAgentRunner selected with Signing and Capabilities configured](assets/ios-real-device-appium-control/xcode-wda-runner-signing-good.png)
+
 If Xcode reports a signing error for `WebDriverAgentLib`, select the `WebDriverAgentLib` target and apply the same team. Do not change its bundle identifier unless Xcode explicitly requires it.
 
 Expected good state:
