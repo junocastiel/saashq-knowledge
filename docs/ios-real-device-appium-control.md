@@ -787,6 +787,51 @@ Server: WDA MJPEG Server
 Content-Type: multipart/x-mixed-replace; boundary=--BoundaryString
 ```
 
+Headers prove the MJPEG server is reachable. To prove real iPhone screen frames are flowing, capture a short burst and extract JPEG frames from the multipart response:
+
+```bash
+rm -f /tmp/wda-mjpeg.bin /tmp/wda-frame-*.jpg
+curl -sS --max-time 3 http://127.0.0.1:9100/ -o /tmp/wda-mjpeg.bin || true
+
+python3 - <<'PY'
+from pathlib import Path
+
+blob = Path('/tmp/wda-mjpeg.bin').read_bytes()
+frames = []
+pos = 0
+
+while True:
+    start = blob.find(b'\xff\xd8', pos)
+    if start < 0:
+        break
+    end = blob.find(b'\xff\xd9', start + 2)
+    if end < 0:
+        break
+    frames.append((start, end + 2))
+    pos = end + 2
+
+print('bytes', len(blob))
+print('jpeg_frames', len(frames))
+
+for index, (start, end) in enumerate(frames[:3], 1):
+    out = Path(f'/tmp/wda-frame-{index}.jpg')
+    out.write_bytes(blob[start:end])
+    print(out, end - start)
+PY
+
+file /tmp/wda-frame-*.jpg
+```
+
+Expected output shape:
+
+```text
+bytes 1368706
+jpeg_frames 28
+/tmp/wda-frame-1.jpg: JPEG image data ... 750x1334
+```
+
+If the header check passes but `jpeg_frames` is `0`, the stream endpoint is reachable but frame delivery is not working. Restart the Appium session, unlock the phone, confirm WDA is ready on `8100`, and retry the capture.
+
 Open the stream in a browser or another viewer:
 
 ```text
