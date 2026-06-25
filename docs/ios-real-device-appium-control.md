@@ -467,13 +467,67 @@ Recommended for repeatable Appium sessions:
 - Pass signing values as Appium capabilities.
 - Use `appium:xcodeOrgId`, `appium:xcodeSigningId`, and `appium:updatedWDABundleId`.
 
-Manual Xcode fallback:
+### Xcode terms that matter during WDA signing
 
-- Select `WebDriverAgentRunner`.
-- Open `Signing & Capabilities`.
-- Choose your team.
-- Change the bundle identifier to something unique, for example `com.example.WebDriverAgentRunner`.
-- Let Xcode create a managed provisioning profile.
+Xcode has several similarly named areas. For WebDriverAgent signing, the difference matters.
+
+- **Project**: the top-level `.xcodeproj` container. Clicking only the project row is not enough.
+- **Target**: a buildable component inside the project. Signing is configured on targets.
+- **WebDriverAgentLib**: the shared library target used by WebDriverAgent.
+- **WebDriverAgentRunner**: the XCTest runner target that Appium installs and launches on the iPhone.
+- **Scheme**: the selected build/run recipe in Xcode's toolbar. For WDA, the important scheme is usually `WebDriverAgentRunner`.
+- **Signing & Capabilities**: the Xcode tab where the team, certificate, bundle ID, provisioning profile, and entitlements are resolved.
+
+Most first-time failures happen because the project is selected instead of the `WebDriverAgentRunner` target. Always check the `TARGETS` list before changing signing.
+
+### Manual WDA signing fallback: exact Xcode clicks
+
+Use this fallback only if Appium capabilities are not enough or if you want Xcode to show the signing state visually.
+
+1. Open the WebDriverAgent project in Xcode.
+2. In the left sidebar, open the Project Navigator. This is the folder icon in the top-left area of Xcode.
+3. Click the top-level `WebDriverAgent` project entry.
+4. In the main editor, find the list labeled `TARGETS`.
+5. Click `WebDriverAgentRunner`. Do not click only the top-level project row.
+6. Open the `Signing & Capabilities` tab.
+7. Check `Automatically manage signing`.
+8. If Xcode asks whether it should enable automatic signing or reset provisioning profiles, allow it.
+9. In `Team`, select your Apple account's `Personal Team`.
+10. Change `Bundle Identifier` from the default value to a unique value, for example `com.example.WebDriverAgentRunner`.
+11. Wait for Xcode to finish resolving signing.
+12. Confirm the provisioning profile changes to an Xcode-managed profile.
+13. Confirm the signing certificate shows `Apple Development`.
+
+If Xcode reports a signing error for `WebDriverAgentLib`, select the `WebDriverAgentLib` target and apply the same team. Do not change its bundle identifier unless Xcode explicitly requires it.
+
+Expected good state:
+
+```text
+Target: WebDriverAgentRunner
+Signing: Automatically manage signing
+Team: <your personal team>
+Bundle Identifier: <your unique WDA bundle id>
+Provisioning Profile: Xcode Managed Profile
+Signing Certificate: Apple Development
+```
+
+If Xcode shows `Failed to register bundle identifier`, the default bundle identifier is probably already used by another developer. Change `Bundle Identifier` to a unique reverse-DNS value and wait again.
+
+### WDA signing readiness checklist
+
+Do not start Appium session debugging until this checklist is clean:
+
+- `WebDriverAgentRunner` target is selected, not just the project row.
+- `Team` is not `None`.
+- Bundle identifier is unique.
+- Provisioning profile is resolved.
+- Signing certificate says `Apple Development`.
+- The physical iPhone is connected, unlocked, and trusted.
+- Developer Mode is enabled on the iPhone.
+- `Enable UI Automation` is enabled on the iPhone.
+- No red signing error remains in Xcode.
+
+Stop and fix signing first if any checklist item fails. Reinstalling Appium or changing random capabilities will not fix an unresolved WDA signing problem.
 
 ## Start Appium
 
@@ -520,6 +574,25 @@ Replace placeholders before running:
 - `<device-udid>`
 - `<team-id>`
 - `<unique-wda-bundle-id>`
+
+Use these capabilities deliberately:
+
+| Capability | Why it matters |
+| --- | --- |
+| `appium:udid` | Selects the exact physical iPhone. Use this when more than one simulator or device exists. |
+| `appium:xcodeOrgId` | Apple Team ID used to sign WebDriverAgent. |
+| `appium:xcodeSigningId` | Signing identity. For this setup, use `Apple Development`. |
+| `appium:updatedWDABundleId` | Unique bundle ID Appium uses for WebDriverAgentRunner. |
+| `appium:wdaLaunchTimeout` | Gives WebDriverAgent enough time to build, install, and start on a real iPhone. |
+| `appium:newCommandTimeout` | Keeps the session alive during slower manual checks. |
+| `appium:noReset` | Avoids resetting app/device state between sessions. |
+
+Automation setup stop rule:
+
+- If `xcrun xctrace list devices` does not show the iPhone, fix USB/trust/device detection first.
+- If Xcode still shows WDA signing errors, fix signing before changing Appium capabilities.
+- If Appium starts but session creation fails, read the first signing or WDA launch error before retrying.
+- If two session attempts fail the same way, stop and fix the root cause instead of repeatedly restarting Appium.
 
 ```bash
 curl -sS -X POST http://127.0.0.1:4723/session \
