@@ -1,0 +1,1756 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Static Markdown notes for SaasHQ technical setup and operations.">
+      
+      
+      
+        <link rel="canonical" href="https://blog.saashq.in/ios-real-device-appium-control/">
+      
+      
+        <link rel="prev" href="../fleet-mdm/">
+      
+      
+        <link rel="next" href="../page-template/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>iPhone Appium Control - Mukesh Technical Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#control-a-physical-iphone-from-macos-with-appium" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Mukesh Technical Knowledge Base" class="md-header__button md-logo" aria-label="Mukesh Technical Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Mukesh Technical Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              iPhone Appium Control
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Mukesh Technical Knowledge Base" class="md-nav__button md-logo" aria-label="Mukesh Technical Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Mukesh Technical Knowledge Base
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloudflare-email-routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cloudflare Email Routing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloudflare-tunnel-local-preview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cloudflare Tunnel Local Preview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fleet-mdm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Fleet MDM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    iPhone Appium Control
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    iPhone Appium Control
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Goal
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-setup-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      What This Setup Does
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mac-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mac Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mac Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-install-xcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Install Xcode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-install-homebrew" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Install Homebrew
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-install-usb-and-ios-helper-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Install USB and iOS helper tools
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appium-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appium Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appium Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4-install-appium" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Install Appium
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xcode-account-and-signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Xcode Account and Signing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Xcode Account and Signing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#5-add-an-apple-account-in-xcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Add an Apple account in Xcode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-create-an-apple-development-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Create an Apple Development certificate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iphone-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      iPhone Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="iPhone Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7-connect-and-trust-the-iphone" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Connect and trust the iPhone
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-keep-the-iphone-stable-during-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Keep the iPhone stable during setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-enable-developer-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Enable Developer Mode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-enable-ui-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Enable UI Automation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-trust-the-webdriveragent-developer-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Trust the WebDriverAgent developer app
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#webdriveragent-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      WebDriverAgent Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WebDriverAgent Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#12-locate-webdriveragent" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Locate WebDriverAgent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-understand-the-signing-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Understand the signing failure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-appium" class="md-nav__link">
+    <span class="md-ellipsis">
+      Start Appium
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Start Appium">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#14-start-the-appium-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. Start the Appium server
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-create-a-real-device-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. Create a real-device session
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify Control
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verify Control">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16-take-a-screenshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. Take a screenshot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-read-ui-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. Read UI source
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18-tap-a-harmless-coordinate" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. Tap a harmless coordinate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19-press-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      19. Press Home
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20-open-settings-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. Open Settings again
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#21-end-the-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      21. End the session
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reliability-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reliability Test
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Notes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintenance-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maintenance Notes
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../page-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contribution Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Goal
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-setup-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      What This Setup Does
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mac-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mac Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mac Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-install-xcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Install Xcode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-install-homebrew" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Install Homebrew
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-install-usb-and-ios-helper-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Install USB and iOS helper tools
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appium-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appium Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appium Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4-install-appium" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Install Appium
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xcode-account-and-signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Xcode Account and Signing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Xcode Account and Signing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#5-add-an-apple-account-in-xcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Add an Apple account in Xcode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-create-an-apple-development-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Create an Apple Development certificate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iphone-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      iPhone Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="iPhone Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7-connect-and-trust-the-iphone" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Connect and trust the iPhone
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-keep-the-iphone-stable-during-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Keep the iPhone stable during setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-enable-developer-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Enable Developer Mode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-enable-ui-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Enable UI Automation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-trust-the-webdriveragent-developer-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Trust the WebDriverAgent developer app
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#webdriveragent-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      WebDriverAgent Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WebDriverAgent Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#12-locate-webdriveragent" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Locate WebDriverAgent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-understand-the-signing-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Understand the signing failure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-appium" class="md-nav__link">
+    <span class="md-ellipsis">
+      Start Appium
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Start Appium">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#14-start-the-appium-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. Start the Appium server
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-create-a-real-device-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. Create a real-device session
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify Control
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verify Control">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16-take-a-screenshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. Take a screenshot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-read-ui-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. Read UI source
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18-tap-a-harmless-coordinate" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. Tap a harmless coordinate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19-press-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      19. Press Home
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20-open-settings-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. Open Settings again
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#21-end-the-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      21. End the session
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reliability-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reliability Test
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Notes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintenance-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maintenance Notes
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="control-a-physical-iphone-from-macos-with-appium">Control a Physical iPhone from macOS with Appium</h1>
+<p>Date: 2026-06-25<br />
+Status: Verified locally<br />
+System: macOS, Xcode, Appium, XCUITest, WebDriverAgent, physical iPhone<br />
+Sensitive data: Masked<br />
+Last verified: 2026-06-25</p>
+<h2 id="goal">Goal</h2>
+<p>Set up a Mac and a physical iPhone so Appium can control the iPhone over USB for repeatable automation work.</p>
+<p>The working end state is:</p>
+<ul>
+<li>The iPhone appears in Xcode as a trusted physical device.</li>
+<li>Xcode has an Apple account, personal team, and Apple Development certificate.</li>
+<li>WebDriverAgentRunner installs and runs on the iPhone.</li>
+<li>Appium can take screenshots, read UI source, tap, swipe, type, open apps, and close sessions.</li>
+</ul>
+<p>This guide assumes the engineer is using a Mac and iPhone for the first time.</p>
+<h2 id="what-this-setup-does">What This Setup Does</h2>
+<ul>
+<li>Appium runs an HTTP automation server on the Mac.</li>
+<li>The XCUITest driver builds and installs WebDriverAgent on the iPhone.</li>
+<li>WebDriverAgent uses Apple's XCTest APIs to interact with the phone.</li>
+<li>The phone remains a normal non-jailbroken iPhone.</li>
+<li>The USB cable stays connected during the setup and the first reliability test.</li>
+</ul>
+<h2 id="concepts">Concepts</h2>
+<ul>
+<li><strong>Xcode</strong>: Apple's IDE and build toolchain. Physical iPhone automation depends on Xcode because WebDriverAgent is an iOS test runner that must be built and signed.</li>
+<li><strong>Xcode Command Line Tools</strong>: Terminal tools such as <code>xcodebuild</code>, <code>xcrun</code>, and <code>xctrace</code>. Appium uses these tools behind the scenes.</li>
+<li><strong>Apple account</strong>: The account added inside Xcode. A free personal team is enough for local physical-device testing.</li>
+<li><strong>Team ID</strong>: Apple's identifier for the development team. Appium uses it through <code>appium:xcodeOrgId</code>.</li>
+<li><strong>Certificate</strong>: A signing identity stored in the Mac keychain. For this setup, use an <code>Apple Development</code> certificate.</li>
+<li><strong>Private key</strong>: The secret key paired with the certificate. It stays on the Mac and should not be copied into documentation or scripts.</li>
+<li><strong>Bundle identifier</strong>: A reverse-DNS app identifier, for example <code>com.example.WebDriverAgentRunner</code>.</li>
+<li><strong>Provisioning profile</strong>: Apple's signed permission file that connects a team, certificate, app identifier, and allowed device.</li>
+<li><strong>Entitlement</strong>: A signed app permission. Xcode embeds entitlements into the signed app when needed.</li>
+<li><strong>Developer profile on iPhone</strong>: The iPhone-side trust entry created when a development-signed app is installed.</li>
+<li><strong>Developer Mode</strong>: iOS setting required on iOS 16 and later before development-signed apps can run reliably.</li>
+<li><strong>WebDriverAgent</strong>: The XCTest server app that Appium installs on the phone.</li>
+<li><strong>UDID</strong>: The unique device identifier. Treat it as sensitive and mask it in public docs.</li>
+</ul>
+<h2 id="final-configuration">Final Configuration</h2>
+<ul>
+<li>Mac: macOS with Xcode installed.</li>
+<li>Package manager: Homebrew.</li>
+<li>Node.js: installed through Homebrew or another trusted package manager.</li>
+<li>Appium: installed globally with <code>npm</code>.</li>
+<li>Appium driver: <code>xcuitest</code>.</li>
+<li>iPhone: trusted over USB, Developer Mode enabled.</li>
+<li>WDA bundle ID: use your own unique value, for example <code>com.example.WebDriverAgentRunner</code>.</li>
+</ul>
+<h2 id="mac-setup">Mac Setup</h2>
+<h3 id="1-install-xcode">1. Install Xcode</h3>
+<p>Open the Mac App Store, search for <code>Xcode</code>, and install it.</p>
+<p><img alt="Xcode in the Mac App Store" src="../assets/ios-real-device-appium-control/app-store-xcode.png" /></p>
+<p>After installation, open Xcode once. If Xcode asks to install additional components or device support, allow it to finish.</p>
+<p>Check Xcode from Terminal:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>xcodebuild<span class="w"> </span>-version
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Xcode 26.0.1
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Build version 17A400
+</code></pre></div>
+<p>Point command line tools at the full Xcode app:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>xcode-select<span class="w"> </span>-s<span class="w"> </span>/Applications/Xcode.app/Contents/Developer
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>xcode-select<span class="w"> </span>-p
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/Applications/Xcode.app/Contents/Developer
+</code></pre></div>
+<p>If Xcode asks for a license agreement:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>xcodebuild<span class="w"> </span>-license<span class="w"> </span>accept
+</code></pre></div>
+<p>No output is also acceptable if the license was already accepted.</p>
+<h3 id="2-install-homebrew">2. Install Homebrew</h3>
+<p>Install Homebrew from Terminal:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>==&gt; Installation successful!
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>==&gt; Next steps:
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>- Run these commands in your terminal to add Homebrew to your PATH
+</code></pre></div>
+<p>Follow the exact <code>eval</code> or <code>echo ... &gt;&gt; ~/.zprofile</code> instructions printed by Homebrew.</p>
+<p>Verify:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>brew<span class="w"> </span>--version
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Homebrew 4.x.x
+</code></pre></div>
+<h3 id="3-install-usb-and-ios-helper-tools">3. Install USB and iOS helper tools</h3>
+<p>Install tools used for diagnostics and fallback device inspection:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>brew<span class="w"> </span>install<span class="w"> </span>node<span class="w"> </span>ios-deploy<span class="w"> </span>libimobiledevice<span class="w"> </span>ideviceinstaller<span class="w"> </span>pipx
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>==&gt; Pouring node--...
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>==&gt; Pouring ios-deploy--...
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>==&gt; Pouring libimobiledevice--...
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>==&gt; Pouring ideviceinstaller--...
+</code></pre></div>
+<p>Verify Node and npm:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>node<span class="w"> </span>-v
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>npm<span class="w"> </span>-v
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>v24.x.x
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>11.x.x
+</code></pre></div>
+<p>Verify USB tools:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>ios-deploy<span class="w"> </span>--version
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>idevice_id<span class="w"> </span>-l
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>1.12.2
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>&lt;masked-device-udid&gt;
+</code></pre></div>
+<p>Install <code>pymobiledevice3</code> as an optional diagnostic backup.</p>
+<ul>
+<li><code>pymobiledevice3</code> is a Python CLI for inspecting and troubleshooting iOS devices.</li>
+<li>The upstream project documents <code>python3 -m pip install -U pymobiledevice3</code>.</li>
+<li>This guide uses <code>pipx</code> because Homebrew-managed Python on macOS often blocks global <code>pip</code> installs.</li>
+<li><code>pipx</code> creates a separate virtual environment for the command and exposes <code>pymobiledevice3</code> on your shell path.</li>
+<li>If <code>pipx ensurepath</code> says it changed your shell path, open a new Terminal tab before running <code>pymobiledevice3</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>pipx<span class="w"> </span>ensurepath
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>pipx<span class="w"> </span>install<span class="w"> </span>pymobiledevice3
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>pymobiledevice3<span class="w"> </span>usbmux<span class="w"> </span>list
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Success! Added ... to the PATH environment variable.
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>installed package pymobiledevice3 ...
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>These apps are now globally available
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>  - pymobiledevice3
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>Device:
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>  Identifier: &lt;masked-device-udid&gt;
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>  ConnectionType: USB
+</code></pre></div>
+<h2 id="appium-setup">Appium Setup</h2>
+<h3 id="4-install-appium">4. Install Appium</h3>
+<p>Install Appium globally with npm:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>appium
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>appium<span class="w"> </span>-v
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>3.5.2
+</code></pre></div>
+<p>Install the XCUITest driver:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>appium<span class="w"> </span>driver<span class="w"> </span>install<span class="w"> </span>xcuitest
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>appium<span class="w"> </span>driver<span class="w"> </span>list<span class="w"> </span>--installed
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>✔ Installing &#39;xcuitest&#39; using NPM install spec &#39;appium-xcuitest-driver&#39;
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>xcuitest@11.14.1 [installed (npm)]
+</code></pre></div>
+<p>Install Appium Doctor:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@appium/doctor
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>appium-doctor<span class="w"> </span>--version
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>2.1.15
+</code></pre></div>
+<p>Use Appium Doctor as a checklist, not as the only source of truth:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>appium-doctor<span class="w"> </span>--ios
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>info AppiumDoctor ### Diagnostic starting ###
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>info AppiumDoctor  ✔ Xcode is installed
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>info AppiumDoctor  ✔ xcodebuild exists
+</code></pre></div>
+<h2 id="xcode-account-and-signing">Xcode Account and Signing</h2>
+<h3 id="5-add-an-apple-account-in-xcode">5. Add an Apple account in Xcode</h3>
+<p>Open:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>Xcode -&gt; Settings -&gt; Apple Accounts
+</code></pre></div>
+<p>Add your Apple account. After sign-in, open the account's <code>Personal Team</code>.</p>
+<p><img alt="Xcode Apple account personal team" src="../assets/ios-real-device-appium-control/xcode-apple-team-detail.png" /></p>
+<h3 id="6-create-an-apple-development-certificate">6. Create an Apple Development certificate</h3>
+<p>In the same team detail screen, click:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>Manage Certificates...
+</code></pre></div>
+<p>If there is no certificate:</p>
+<ol>
+<li>Click <code>+</code>.</li>
+<li>Choose <code>Apple Development</code>.</li>
+<li>Wait for Xcode to create the certificate.</li>
+</ol>
+<p><img alt="Xcode Manage Certificates with Apple Development certificate" src="../assets/ios-real-device-appium-control/xcode-manage-certificates.png" /></p>
+<p>The certificate and private key stay in the Mac keychain. Do not paste keychain exports, <code>.p12</code> files, or certificate passwords into documentation.</p>
+<h2 id="iphone-setup">iPhone Setup</h2>
+<h3 id="7-connect-and-trust-the-iphone">7. Connect and trust the iPhone</h3>
+<p>Connect the iPhone to the Mac with a USB cable.</p>
+<p>On the iPhone, accept:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Trust This Computer?
+</code></pre></div>
+<p>Enter the iPhone passcode if prompted.</p>
+<p>This trust popup appears before Appium can capture screenshots. Verify the result in Xcode instead:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>Xcode -&gt; Window -&gt; Devices and Simulators
+</code></pre></div>
+<p>The iPhone should appear under <code>Connected</code>.</p>
+<p><img alt="Xcode Devices window showing a connected iPhone and WebDriverAgentRunner" src="../assets/ios-real-device-appium-control/xcode-devices-connected.png" /></p>
+<p>Verify from Terminal:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>xcrun<span class="w"> </span>xctrace<span class="w"> </span>list<span class="w"> </span>devices
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>== Devices ==
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>&lt;device-name&gt; (16.7.12) (&lt;masked-device-udid&gt;)
+</code></pre></div>
+<p>Also verify USB visibility:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>pymobiledevice3<span class="w"> </span>usbmux<span class="w"> </span>list
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>Identifier: &lt;masked-device-udid&gt;
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>ConnectionType: USB
+</code></pre></div>
+<h3 id="8-keep-the-iphone-stable-during-setup">8. Keep the iPhone stable during setup</h3>
+<p>On the iPhone, keep these temporary setup defaults:</p>
+<ul>
+<li>Keep the phone unlocked.</li>
+<li>Keep the USB cable connected.</li>
+<li>Disable short auto-lock temporarily.</li>
+<li>Stay near the Home screen or Settings app during first setup.</li>
+<li>Avoid passcode prompts while WebDriverAgent is launching.</li>
+</ul>
+<p>Start from the iPhone Settings app:</p>
+<p><img alt="iPhone Settings root screen" src="../assets/ios-real-device-appium-control/iphone-settings-root.png" /></p>
+<h3 id="9-enable-developer-mode">9. Enable Developer Mode</h3>
+<p>Open:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>Settings -&gt; Privacy &amp; Security -&gt; Developer Mode
+</code></pre></div>
+<p>Developer Mode appears near the bottom of <code>Privacy &amp; Security</code>.</p>
+<p><img alt="iPhone Privacy &amp; Security Developer Mode row" src="../assets/ios-real-device-appium-control/iphone-developer-mode-row.png" /></p>
+<p>Open <code>Developer Mode</code>, turn it on, and restart the iPhone if iOS asks.</p>
+<p><img alt="iPhone Developer Mode enabled" src="../assets/ios-real-device-appium-control/iphone-developer-mode-detail.png" /></p>
+<h3 id="10-enable-ui-automation">10. Enable UI Automation</h3>
+<p>Open:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>Settings -&gt; Developer
+</code></pre></div>
+<p>The <code>Developer</code> row appears in Settings after Developer Mode is available.</p>
+<p><img alt="iPhone Settings Developer row" src="../assets/ios-real-device-appium-control/iphone-settings-developer-row.png" /></p>
+<p>Turn on:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>Enable UI Automation
+</code></pre></div>
+<p><img alt="iPhone Developer settings showing Enable UI Automation" src="../assets/ios-real-device-appium-control/iphone-developer-ui-automation.png" /></p>
+<h3 id="11-trust-the-webdriveragent-developer-app">11. Trust the WebDriverAgent developer app</h3>
+<p>After WebDriverAgent is installed for the first time, open:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>Settings -&gt; General -&gt; VPN &amp; Device Management
+</code></pre></div>
+<p><img alt="iPhone General screen" src="../assets/ios-real-device-appium-control/iphone-general.png" /></p>
+<p>Scroll to <code>VPN &amp; Device Management</code>.</p>
+<p><img alt="iPhone General VPN and Device Management row" src="../assets/ios-real-device-appium-control/iphone-general-vpn-device-management.png" /></p>
+<p>Open the developer app profile.</p>
+<p><img alt="iPhone developer app profile" src="../assets/ios-real-device-appium-control/iphone-device-management-profile.png" /></p>
+<p>Trust the developer profile if iOS asks. A trusted WebDriverAgent profile looks like this:</p>
+<p><img alt="iPhone WebDriverAgentRunner trusted and verified" src="../assets/ios-real-device-appium-control/iphone-developer-app-trust.png" /></p>
+<h2 id="webdriveragent-setup">WebDriverAgent Setup</h2>
+<h3 id="12-locate-webdriveragent">12. Locate WebDriverAgent</h3>
+<p>After installing the XCUITest driver, WebDriverAgent is inside the Appium driver folder.</p>
+<p>Find it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>find<span class="w"> </span>~/.appium<span class="w"> </span>-path<span class="w"> </span><span class="s1">&#39;*appium-webdriveragent/WebDriverAgent.xcodeproj&#39;</span><span class="w"> </span>-print<span class="w"> </span>-quit
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>/Users/&lt;mac-user&gt;/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj
+</code></pre></div>
+<p>Open it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>open<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>find<span class="w"> </span>~/.appium<span class="w"> </span>-path<span class="w"> </span><span class="s1">&#39;*appium-webdriveragent/WebDriverAgent.xcodeproj&#39;</span><span class="w"> </span>-print<span class="w"> </span>-quit<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+<p><img alt="WebDriverAgent project open in Xcode" src="../assets/ios-real-device-appium-control/xcode-wda-project.png" /></p>
+<h3 id="13-understand-the-signing-failure">13. Understand the signing failure</h3>
+<p>If Xcode shows this error, the project has no development team selected:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>Signing for &quot;WebDriverAgentRunner&quot; requires a development team.
+</code></pre></div>
+<p><img alt="WebDriverAgentRunner Signing and Capabilities screen" src="../assets/ios-real-device-appium-control/xcode-wda-signing-error.png" /></p>
+<p>There are two valid ways to fix it.</p>
+<p>Recommended for repeatable Appium sessions:</p>
+<ul>
+<li>Do not manually edit the Appium-installed WebDriverAgent project.</li>
+<li>Pass signing values as Appium capabilities.</li>
+<li>Use <code>appium:xcodeOrgId</code>, <code>appium:xcodeSigningId</code>, and <code>appium:updatedWDABundleId</code>.</li>
+</ul>
+<p>Manual Xcode fallback:</p>
+<ul>
+<li>Select <code>WebDriverAgentRunner</code>.</li>
+<li>Open <code>Signing &amp; Capabilities</code>.</li>
+<li>Choose your team.</li>
+<li>Change the bundle identifier to something unique, for example <code>com.example.WebDriverAgentRunner</code>.</li>
+<li>Let Xcode create a managed provisioning profile.</li>
+</ul>
+<h2 id="start-appium">Start Appium</h2>
+<h3 id="14-start-the-appium-server">14. Start the Appium server</h3>
+<p>Run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>appium<span class="w"> </span>--log-level<span class="w"> </span>info<span class="w"> </span>--base-path<span class="w"> </span>/
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>[Appium] Welcome to Appium v3.5.2
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>[Appium] Appium REST http interface listener started on http://0.0.0.0:4723
+</code></pre></div>
+<p>Leave this terminal running.</p>
+<p>From another terminal, check server status:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>curl<span class="w"> </span>-sS<span class="w"> </span>http://127.0.0.1:4723/status
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="p">{</span>
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">  </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">    </span><span class="nt">&quot;ready&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The server is ready to accept new connections&quot;</span>
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="15-create-a-real-device-session">15. Create a real-device session</h3>
+<p>Replace placeholders before running:</p>
+<ul>
+<li><code>&lt;device-name&gt;</code></li>
+<li><code>&lt;ios-version&gt;</code></li>
+<li><code>&lt;device-udid&gt;</code></li>
+<li><code>&lt;team-id&gt;</code></li>
+<li><code>&lt;unique-wda-bundle-id&gt;</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>curl<span class="w"> </span>-sS<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://127.0.0.1:4723/session<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="s1">    &quot;capabilities&quot;: {</span>
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="s1">      &quot;alwaysMatch&quot;: {</span>
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="s1">        &quot;platformName&quot;: &quot;iOS&quot;,</span>
+<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a><span class="s1">        &quot;appium:automationName&quot;: &quot;XCUITest&quot;,</span>
+<a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a><span class="s1">        &quot;appium:deviceName&quot;: &quot;&lt;device-name&gt;&quot;,</span>
+<a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a><span class="s1">        &quot;appium:platformVersion&quot;: &quot;&lt;ios-version&gt;&quot;,</span>
+<a id="__codelineno-45-10" name="__codelineno-45-10" href="#__codelineno-45-10"></a><span class="s1">        &quot;appium:udid&quot;: &quot;&lt;device-udid&gt;&quot;,</span>
+<a id="__codelineno-45-11" name="__codelineno-45-11" href="#__codelineno-45-11"></a><span class="s1">        &quot;appium:bundleId&quot;: &quot;com.apple.Preferences&quot;,</span>
+<a id="__codelineno-45-12" name="__codelineno-45-12" href="#__codelineno-45-12"></a><span class="s1">        &quot;appium:xcodeOrgId&quot;: &quot;&lt;team-id&gt;&quot;,</span>
+<a id="__codelineno-45-13" name="__codelineno-45-13" href="#__codelineno-45-13"></a><span class="s1">        &quot;appium:xcodeSigningId&quot;: &quot;Apple Development&quot;,</span>
+<a id="__codelineno-45-14" name="__codelineno-45-14" href="#__codelineno-45-14"></a><span class="s1">        &quot;appium:updatedWDABundleId&quot;: &quot;&lt;unique-wda-bundle-id&gt;&quot;,</span>
+<a id="__codelineno-45-15" name="__codelineno-45-15" href="#__codelineno-45-15"></a><span class="s1">        &quot;appium:wdaLaunchTimeout&quot;: 120000,</span>
+<a id="__codelineno-45-16" name="__codelineno-45-16" href="#__codelineno-45-16"></a><span class="s1">        &quot;appium:newCommandTimeout&quot;: 120</span>
+<a id="__codelineno-45-17" name="__codelineno-45-17" href="#__codelineno-45-17"></a><span class="s1">      },</span>
+<a id="__codelineno-45-18" name="__codelineno-45-18" href="#__codelineno-45-18"></a><span class="s1">      &quot;firstMatch&quot;: [{}]</span>
+<a id="__codelineno-45-19" name="__codelineno-45-19" href="#__codelineno-45-19"></a><span class="s1">    }</span>
+<a id="__codelineno-45-20" name="__codelineno-45-20" href="#__codelineno-45-20"></a><span class="s1">  }&#39;</span>
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="p">{</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">  </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">    </span><span class="nt">&quot;sessionId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;appium-session-id&gt;&quot;</span><span class="p">,</span>
+<a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="w">    </span><span class="nt">&quot;capabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="w">      </span><span class="nt">&quot;platformName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;iOS&quot;</span><span class="p">,</span>
+<a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="w">      </span><span class="nt">&quot;automationName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;XCUITest&quot;</span>
+<a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-46-9" name="__codelineno-46-9" href="#__codelineno-46-9"></a><span class="p">}</span>
+</code></pre></div>
+<p>Keep the <code>sessionId</code>. The examples below use:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="nv">SID</span><span class="o">=</span><span class="s2">&quot;&lt;appium-session-id&gt;&quot;</span>
+</code></pre></div>
+<h2 id="verify-control">Verify Control</h2>
+<h3 id="16-take-a-screenshot">16. Take a screenshot</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>curl<span class="w"> </span>-sS<span class="w"> </span><span class="s2">&quot;http://127.0.0.1:4723/session/</span><span class="nv">$SID</span><span class="s2">/screenshot&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import sys,json,base64; print(json.load(sys.stdin)[&quot;value&quot;])&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span>&gt;<span class="w"> </span>iphone-appium-screenshot.png
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a>
+<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a>file<span class="w"> </span>iphone-appium-screenshot.png
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>iphone-appium-screenshot.png: PNG image data
+</code></pre></div>
+<h3 id="17-read-ui-source">17. Read UI source</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>curl<span class="w"> </span>-sS<span class="w"> </span><span class="s2">&quot;http://127.0.0.1:4723/session/</span><span class="nv">$SID</span><span class="s2">/source&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>json.tool<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;1,40p&#39;</span>
+</code></pre></div>
+<p>Expected output shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>{
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>    &quot;value&quot;: &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;&lt;AppiumAUT&gt;...&quot;
+<a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a>}
+</code></pre></div>
+<h3 id="18-tap-a-harmless-coordinate">18. Tap a harmless coordinate</h3>
+<p>This example taps near the center of the screen. Use it only on a harmless screen such as Settings.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>curl<span class="w"> </span>-sS<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://127.0.0.1:4723/session/</span><span class="nv">$SID</span><span class="s2">/actions&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a><span class="s1">    &quot;actions&quot;: [{</span>
+<a id="__codelineno-52-5" name="__codelineno-52-5" href="#__codelineno-52-5"></a><span class="s1">      &quot;type&quot;: &quot;pointer&quot;,</span>
+<a id="__codelineno-52-6" name="__codelineno-52-6" href="#__codelineno-52-6"></a><span class="s1">      &quot;id&quot;: &quot;finger1&quot;,</span>
+<a id="__codelineno-52-7" name="__codelineno-52-7" href="#__codelineno-52-7"></a><span class="s1">      &quot;parameters&quot;: { &quot;pointerType&quot;: &quot;touch&quot; },</span>
+<a id="__codelineno-52-8" name="__codelineno-52-8" href="#__codelineno-52-8"></a><span class="s1">      &quot;actions&quot;: [</span>
+<a id="__codelineno-52-9" name="__codelineno-52-9" href="#__codelineno-52-9"></a><span class="s1">        { &quot;type&quot;: &quot;pointerMove&quot;, &quot;duration&quot;: 0, &quot;x&quot;: 190, &quot;y&quot;: 320, &quot;origin&quot;: &quot;viewport&quot; },</span>
+<a id="__codelineno-52-10" name="__codelineno-52-10" href="#__codelineno-52-10"></a><span class="s1">        { &quot;type&quot;: &quot;pointerDown&quot;, &quot;button&quot;: 0 },</span>
+<a id="__codelineno-52-11" name="__codelineno-52-11" href="#__codelineno-52-11"></a><span class="s1">        { &quot;type&quot;: &quot;pause&quot;, &quot;duration&quot;: 80 },</span>
+<a id="__codelineno-52-12" name="__codelineno-52-12" href="#__codelineno-52-12"></a><span class="s1">        { &quot;type&quot;: &quot;pointerUp&quot;, &quot;button&quot;: 0 }</span>
+<a id="__codelineno-52-13" name="__codelineno-52-13" href="#__codelineno-52-13"></a><span class="s1">      ]</span>
+<a id="__codelineno-52-14" name="__codelineno-52-14" href="#__codelineno-52-14"></a><span class="s1">    }]</span>
+<a id="__codelineno-52-15" name="__codelineno-52-15" href="#__codelineno-52-15"></a><span class="s1">  }&#39;</span>
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="p">{</span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="kc">null</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="19-press-home">19. Press Home</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>curl<span class="w"> </span>-sS<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://127.0.0.1:4723/session/</span><span class="nv">$SID</span><span class="s2">/execute/sync&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;script&quot;:&quot;mobile: pressButton&quot;,&quot;args&quot;:[{&quot;name&quot;:&quot;home&quot;}]}&#39;</span>
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="p">{</span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="kc">null</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="20-open-settings-again">20. Open Settings again</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>curl<span class="w"> </span>-sS<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://127.0.0.1:4723/session/</span><span class="nv">$SID</span><span class="s2">/appium/device/activate_app&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;bundleId&quot;:&quot;com.apple.Preferences&quot;}&#39;</span>
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="p">{</span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="kc">null</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="21-end-the-session">21. End the session</h3>
+<p>Always delete the Appium session when finished:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>curl<span class="w"> </span>-sS<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span><span class="s2">&quot;http://127.0.0.1:4723/session/</span><span class="nv">$SID</span><span class="s2">&quot;</span>
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="p">{</span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="kc">null</span><span class="p">}</span>
+</code></pre></div>
+<p>Stop the Appium server with <code>Ctrl+C</code>.</p>
+<h2 id="reliability-test">Reliability Test</h2>
+<p>Before building a wrapper, MCP bridge, or WDIO layer, prove raw Appium works.</p>
+<p>Run 10 cycles manually or from a small script:</p>
+<ul>
+<li>Take screenshot.</li>
+<li>Get UI source.</li>
+<li>Tap a harmless coordinate.</li>
+<li>Swipe or scroll.</li>
+<li>Press Home.</li>
+<li>Open Settings.</li>
+</ul>
+<p>Pass condition:</p>
+<ul>
+<li>10 consecutive cycles complete without WDA crash.</li>
+<li>The USB device does not disconnect.</li>
+<li>Appium does not lose the session.</li>
+<li>Screenshots and source are returned in every cycle.</li>
+</ul>
+<p>On this Mac and iPhone, the raw Appium stack completed 10 consecutive cycles successfully on 2026-06-25.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Check</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>xcrun xctrace list devices</code> does not show the iPhone</td>
+<td>USB cable, trust state, unlocked phone</td>
+<td>Reconnect USB, unlock iPhone, accept <code>Trust This Computer</code>.</td>
+</tr>
+<tr>
+<td>Appium session fails with signing error</td>
+<td>Xcode account, certificate, team ID, WDA bundle ID</td>
+<td>Add Apple account in Xcode, create Apple Development certificate, use a unique <code>appium:updatedWDABundleId</code>.</td>
+</tr>
+<tr>
+<td>iPhone says developer app is not trusted</td>
+<td>iPhone developer profile</td>
+<td>Open <code>Settings -&gt; General -&gt; VPN &amp; Device Management</code> and trust the developer app.</td>
+</tr>
+<tr>
+<td>WDA launch times out</td>
+<td>Phone locked or Developer Mode off</td>
+<td>Unlock phone, confirm Developer Mode is on, retry session creation.</td>
+</tr>
+<tr>
+<td><code>appium driver list --installed</code> does not show <code>xcuitest</code></td>
+<td>Driver installation</td>
+<td>Run <code>appium driver install xcuitest</code>.</td>
+</tr>
+<tr>
+<td>Appium hangs during a command</td>
+<td>WDA or XCTest is stuck</td>
+<td>Delete the session, stop Appium, unlock phone, restart Appium.</td>
+</tr>
+<tr>
+<td>Device disappears during test</td>
+<td>USB instability</td>
+<td>Use a known-good cable and avoid USB hubs during first setup.</td>
+</tr>
+<tr>
+<td>Xcode asks for iOS platform support</td>
+<td>Missing Xcode device support</td>
+<td>Let Xcode install required platform/device support components.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="security-notes">Security Notes</h2>
+<ul>
+<li>Do not publish UDIDs, serial numbers, Apple IDs, team IDs, or signing keys.</li>
+<li>Do not share Apple account passwords, OTPs, private keys, <code>.p12</code> files, or recovery codes.</li>
+<li>Use a unique WDA bundle ID per developer or machine.</li>
+<li>Keep screenshots redacted before publishing.</li>
+<li>Prefer raw Appium first. Add WDIO, MCP, or other wrappers only after Appium itself is stable.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://appium.io/docs/en/latest/quickstart/install/">Appium Install Appium</a>: Appium installation and server startup.</li>
+<li><a href="https://appium.github.io/appium-xcuitest-driver/latest/preparation/real-device-config/">Appium XCUITest Device Preparation</a>: real-device requirements such as trusted device, Developer Mode, UI Automation, and provisioning.</li>
+<li><a href="https://appium.github.io/appium-xcuitest-driver/latest/reference/capabilities/">Appium XCUITest Capabilities</a>: <code>xcodeOrgId</code>, <code>xcodeSigningId</code>, <code>updatedWDABundleId</code>, and WDA timeout capabilities.</li>
+<li><a href="https://brew.sh/">Homebrew Installation</a>: Homebrew install command and shell setup.</li>
+<li><a href="https://developer.apple.com/xcode/">Apple Xcode</a>: Xcode toolchain overview.</li>
+</ul>
+<h2 id="maintenance-notes">Maintenance Notes</h2>
+<ul>
+<li>Update command outputs when Appium, Xcode, or iOS versions change.</li>
+<li>Keep all screenshots in <code>docs/assets/ios-real-device-appium-control/</code>.</li>
+<li>Keep raw screenshots out of the repository because they often contain Apple IDs, UDIDs, serial numbers, or installed app names.</li>
+<li>Re-run <code>mkdocs build --strict</code> after each edit.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

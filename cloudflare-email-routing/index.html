@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Static documentation for technical execution notes, runbooks, decisions, and troubleshooting.">
+        <meta name="description" content="Static Markdown notes for SaasHQ technical setup and operations.">
       
       
       
-        <link rel="canonical" href="https://blog.saashq.in/decisions/">
+        <link rel="canonical" href="https://blog.saashq.in/cloudflare-email-routing/">
       
       
-        <link rel="prev" href="../device-management/">
+        <link rel="prev" href="..">
       
       
-        <link rel="next" href="../troubleshooting/">
+        <link rel="next" href="../cloudflare-tunnel-local-preview/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Overview - Mukesh Technical Knowledge Base</title>
+        <title>Cloudflare Email Routing - Mukesh Technical Knowledge Base</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#decisions" class="md-skip">
+        <a href="#cloudflare-email-routing" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              Cloudflare Email Routing
             
           </span>
         </div>
@@ -241,64 +241,133 @@
       
   
   
+    
   
   
-    
-    
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
       
         
       
-    
-    
-    
       
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
+        <label class="md-nav__link md-nav__link--active" for="__toc">
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
-            
   
   
   <span class="md-ellipsis">
-    Execution Logs
+    Cloudflare Email Routing
     
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            Execution Logs
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
+  
+  
+  <span class="md-ellipsis">
+    Cloudflare Email Routing
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Goal
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#email-worker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Email Worker
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Checklist
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
   
   
   
   
     <li class="md-nav__item">
-      <a href="../execution-logs/cloudflare-mdm-email-routing/" class="md-nav__link">
+      <a href="../cloudflare-tunnel-local-preview/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Cloudflare Email Routing for Fleet MDM
+    Cloudflare Tunnel Local Preview
     
   </span>
   
@@ -307,152 +376,20 @@
     </li>
   
 
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
     
       
       
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../runbooks/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    Runbooks
-    
-  </span>
-  
-
-            </a>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            Runbooks
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../infrastructure/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    Infrastructure
-    
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            Infrastructure
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
   
   
   
   
     <li class="md-nav__item">
-      <a href="../infrastructure/cloudflare/" class="md-nav__link">
+      <a href="../fleet-mdm/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Cloudflare
+    Fleet MDM
     
   </span>
   
@@ -461,263 +398,20 @@
     </li>
   
 
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
     
       
       
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../device-management/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    Device Management
-    
-  </span>
-  
-
-            </a>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
-            <span class="md-nav__icon md-icon"></span>
-            Device Management
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
-              
-  
-  
-  <span class="md-ellipsis">
-    Decisions
-    
-  </span>
-  
-
-            </a>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
-            Decisions
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../troubleshooting/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    Troubleshooting
-    
-  </span>
-  
-
-            </a>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7">
-            <span class="md-nav__icon md-icon"></span>
-            Troubleshooting
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-      
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    Page Templates
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
-            <span class="md-nav__icon md-icon"></span>
-            Page Templates
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
   
   
   
   
     <li class="md-nav__item">
-      <a href="../page-templates/execution-note-template/" class="md-nav__link">
+      <a href="../ios-real-device-appium-control/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Execution Note Template
+    iPhone Appium Control
     
   </span>
   
@@ -726,11 +420,25 @@
     </li>
   
 
-              
-            
-          </ul>
-        </nav>
+    
       
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../page-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contribution Guide
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -755,6 +463,68 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Goal
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#email-worker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Email Worker
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Checklist
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -769,16 +539,80 @@
 
 
 
-<h1 id="decisions">Decisions</h1>
-<p>Decision records go here.</p>
-<p>Use this section when you compare options and want to remember why one option was chosen.</p>
-<p>Suggested page format:</p>
+<h1 id="cloudflare-email-routing">Cloudflare Email Routing</h1>
+<p>Date: 2026-06-24<br />
+Status: Working<br />
+System: Cloudflare Email Routing, Cloudflare Workers<br />
+Sensitive data: Masked</p>
+<h2 id="goal">Goal</h2>
+<p>Route any email address ending in <code>@mdm.saashq.in</code> to <code>masked-destination@gmail.com</code> without hosting an email server.</p>
+<p>This pattern is useful when a developer or tester needs disposable, traceable email addresses under one subdomain while all messages still land in a normal inbox.</p>
+<p>Example use cases:</p>
 <ul>
-<li>Context</li>
-<li>Options considered</li>
-<li>Decision</li>
-<li>Tradeoffs</li>
-<li>Follow-up tasks</li>
+<li>Test signup flows with unique addresses such as <code>test-run-123@mdm.saashq.in</code>.</li>
+<li>Capture emails from staging systems without creating real mailboxes.</li>
+<li>Give each integration test, QA run, or sandbox service its own address.</li>
+<li>Route product/vendor notifications from a technical subdomain to one monitored inbox.</li>
+</ul>
+<h2 id="final-result">Final Result</h2>
+<ul>
+<li>Wildcard behavior: <code>*@mdm.saashq.in</code> forwards to <code>masked-destination@gmail.com</code>.</li>
+<li>Exact route kept active: <code>admin@mdm.saashq.in</code>.</li>
+<li>Email Worker: <code>mdm-subdomain-catchall-forwarder</code>.</li>
+<li>Verification address: <code>test-run-1782314050092@mdm.saashq.in</code>.</li>
+<li>Cloudflare Activity Log result: <code>Handled</code> and <code>Forwarded</code>.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Cloudflare subdomain catch-all limitation</p>
+<p>Cloudflare Email Routing does not directly allow a catch-all rule for each subdomain in the dashboard. The working approach is to enable the zone-level catch-all, route it to an Email Worker, and let the worker forward only recipients ending in <code>@mdm.saashq.in</code>.</p>
+</div>
+<h2 id="final-configuration">Final Configuration</h2>
+<ol>
+<li>Email Routing is enabled for <code>saashq.in</code>.</li>
+<li>The Email Routing subdomain <code>mdm.saashq.in</code> is enabled.</li>
+<li>Cloudflare manages/locks the required email DNS records.</li>
+<li>The destination address <code>masked-destination@gmail.com</code> is verified.</li>
+<li>The exact route <code>admin@mdm.saashq.in</code> is active.</li>
+<li>The catch-all rule is active and points to <code>mdm-subdomain-catchall-forwarder</code>.</li>
+</ol>
+<p><img alt="Routing rules showing catch-all worker and admin route" src="../assets/mdm-email-routing/routing-rules-redacted.png" /></p>
+<h2 id="email-worker">Email Worker</h2>
+<p>The worker filters all catch-all mail. Only addresses ending in <code>@mdm.saashq.in</code> are forwarded. Anything else caught by the zone-level catch-all is rejected.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">email</span><span class="p">(</span><span class="nx">message</span><span class="p">,</span><span class="w"> </span><span class="nx">env</span><span class="p">,</span><span class="w"> </span><span class="nx">ctx</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">recipient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">String</span><span class="p">(</span><span class="nx">message</span><span class="p">.</span><span class="nx">to</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">();</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">recipient</span><span class="p">.</span><span class="nx">endsWith</span><span class="p">(</span><span class="s2">&quot;@mdm.saashq.in&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="k">await</span><span class="w"> </span><span class="nx">message</span><span class="p">.</span><span class="nx">forward</span><span class="p">(</span><span class="s2">&quot;masked-destination@gmail.com&quot;</span><span class="p">);</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nx">message</span><span class="p">.</span><span class="nx">setReject</span><span class="p">(</span><span class="s2">&quot;No route configured for this address&quot;</span><span class="p">);</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">};</span>
+</code></pre></div>
+<p><img alt="Email Worker editor with destination masked" src="../assets/mdm-email-routing/worker-editor-redacted.png" /></p>
+<h2 id="verification">Verification</h2>
+<p>Test email sent to:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>test-run-1782314050092@mdm.saashq.in
+</code></pre></div>
+<p>Cloudflare Activity Log showed:</p>
+<ul>
+<li>Subject: <code>Cloudflare mdm wildcard test 2026-06-24T15:14:10.093Z</code></li>
+<li>Recipient: <code>test-run-1782314050092@mdm.saashq.in</code></li>
+<li>Result: <code>Handled</code></li>
+<li>Result: <code>Forwarded</code></li>
+</ul>
+<p><img alt="Activity Log showing wildcard test handled and forwarded" src="../assets/mdm-email-routing/activity-log-redacted.png" /></p>
+<p>Gmail search also showed the matching test conversation in the destination mailbox.</p>
+<p><img alt="Gmail verification search result" src="../assets/mdm-email-routing/gmail-verification-redacted.png" /></p>
+<h2 id="future-checklist">Future Checklist</h2>
+<ul>
+<li>Use addresses like <code>qa-run-001@mdm.saashq.in</code>, <code>staging-alerts@mdm.saashq.in</code>, or <code>vendor-test@mdm.saashq.in</code> when a tool needs a unique inbox address.</li>
+<li>If mail stops arriving, check Cloudflare Email Routing -&gt; Activity Log first.</li>
+<li>If Activity Log shows <code>Handled</code> but not <code>Forwarded</code>, inspect the Email Worker and destination verification.</li>
+<li>If Activity Log has no entry, check DNS/subdomain status under Email Routing settings.</li>
+<li>Keep real mailbox usernames out of screenshots and public docs.</li>
 </ul>
 
 

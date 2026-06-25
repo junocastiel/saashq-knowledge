@@ -2,38 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://blog.saashq.in/</loc>
-         <lastmod>2026-06-24</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
-         <loc>https://blog.saashq.in/decisions/</loc>
-         <lastmod>2026-06-24</lastmod>
+         <loc>https://blog.saashq.in/cloudflare-email-routing/</loc>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
-         <loc>https://blog.saashq.in/device-management/</loc>
-         <lastmod>2026-06-24</lastmod>
+         <loc>https://blog.saashq.in/cloudflare-tunnel-local-preview/</loc>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
-         <loc>https://blog.saashq.in/execution-logs/cloudflare-mdm-email-routing/</loc>
-         <lastmod>2026-06-24</lastmod>
+         <loc>https://blog.saashq.in/fleet-mdm/</loc>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
-         <loc>https://blog.saashq.in/infrastructure/</loc>
-         <lastmod>2026-06-24</lastmod>
+         <loc>https://blog.saashq.in/ios-real-device-appium-control/</loc>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
-         <loc>https://blog.saashq.in/infrastructure/cloudflare/</loc>
-         <lastmod>2026-06-24</lastmod>
-    </url>
-    <url>
-         <loc>https://blog.saashq.in/page-templates/execution-note-template/</loc>
-         <lastmod>2026-06-24</lastmod>
-    </url>
-    <url>
-         <loc>https://blog.saashq.in/runbooks/</loc>
-         <lastmod>2026-06-24</lastmod>
-    </url>
-    <url>
-         <loc>https://blog.saashq.in/troubleshooting/</loc>
-         <lastmod>2026-06-24</lastmod>
+         <loc>https://blog.saashq.in/page-template/</loc>
+         <lastmod>2026-06-25</lastmod>
     </url>
 </urlset>
