@@ -657,6 +657,209 @@ Expected output:
 
 Stop the Appium server with `Ctrl+C`.
 
+## Reconnect, Restart, and Daily Use
+
+After the first successful setup, do not repeat the full Xcode signing and iPhone trust flow every day. Separate the one-time setup from the repeat workflow.
+
+What persists:
+
+- The iPhone's `Trust This Computer` decision normally survives unplug, replug, Mac restart, and iPhone restart.
+- The trusted Apple Development profile normally survives unplug, replug, Mac restart, and iPhone restart.
+- The WebDriverAgent signing setup remains valid as long as the same Apple team, certificate, provisioning profile, and bundle identifier are used.
+
+What does not persist:
+
+- The Appium server process stops when its terminal is closed or the Mac restarts.
+- The Appium WebDriver session is temporary. Create a fresh session after reconnecting, restarting, or stopping Appium.
+- WebDriverAgent may be relaunched or reinstalled by Appium when needed.
+
+### Daily reconnect checklist
+
+Start with the iPhone unlocked and connected over USB.
+
+Confirm Xcode sees the phone:
+
+```bash
+xcrun xctrace list devices | grep -E "iPhone|Devices Offline"
+```
+
+Expected output shape:
+
+```text
+<device-name> (16.7.12) (<masked-device-udid>)
+== Devices Offline ==
+```
+
+`Devices Offline` may appear as a section header. The important part is that your iPhone appears above it under available devices.
+
+Confirm USB transport sees the phone:
+
+```bash
+pymobiledevice3 usbmux list
+```
+
+Expected output shape:
+
+```text
+Identifier: <masked-device-udid>
+ConnectionType: USB
+```
+
+Start Appium:
+
+```bash
+appium --address 127.0.0.1 --port 4723 --log-level info
+```
+
+Expected output shape:
+
+```text
+[Appium] Appium REST http interface listener started on http://127.0.0.1:4723
+[Appium] Available drivers:
+[Appium]   - xcuitest@...
+```
+
+Create a new Appium session using the same capabilities from [Create a real-device session](#15-create-a-real-device-session). Save the returned session ID:
+
+```bash
+SID="<appium-session-id>"
+```
+
+### Known-good reconnect test
+
+Run this short test after a Mac restart, iPhone restart, unplug/replug, or long idle period.
+
+Check the logical screen size:
+
+```bash
+curl -fsS "http://127.0.0.1:4723/session/$SID/window/rect"
+```
+
+Expected output:
+
+```json
+{"value":{"y":0,"x":0,"width":375,"height":667}}
+```
+
+The logical size is in XCTest points. A screenshot from the same iPhone may be larger in physical pixels.
+
+Capture a screenshot:
+
+```bash
+curl -fsS "http://127.0.0.1:4723/session/$SID/screenshot" \
+  | python3 -c 'import sys,json,base64; sys.stdout.buffer.write(base64.b64decode(json.load(sys.stdin)["value"]))' \
+  > /tmp/appium-iphone-reconnect-test.png
+
+file /tmp/appium-iphone-reconnect-test.png
+```
+
+Expected output shape:
+
+```text
+/tmp/appium-iphone-reconnect-test.png: PNG image data, 750 x 1334
+```
+
+Confirm UI source is readable:
+
+```bash
+curl -fsS "http://127.0.0.1:4723/session/$SID/source" \
+  | python3 -m json.tool \
+  | sed -n '1,30p'
+```
+
+Expected output shape:
+
+```text
+{
+    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>..."
+}
+```
+
+If the phone is on the Home screen, you can also verify a real tap by opening Settings. First confirm the Settings icon is visible in the source:
+
+```bash
+curl -fsS "http://127.0.0.1:4723/session/$SID/source" \
+  | python3 -c 'import sys,json; print(json.load(sys.stdin)["value"])' \
+  | grep 'name="Settings"'
+```
+
+Expected output shape:
+
+```text
+<XCUIElementTypeIcon ... name="Settings" label="Settings" ...>
+```
+
+Tap the Settings icon. Coordinates are in logical XCTest points, not physical screenshot pixels. Adjust the coordinates if your icon layout is different.
+
+```bash
+curl -fsS -X POST "http://127.0.0.1:4723/session/$SID/actions" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "actions": [{
+      "type": "pointer",
+      "id": "finger1",
+      "parameters": { "pointerType": "touch" },
+      "actions": [
+        { "type": "pointerMove", "duration": 0, "x": 231, "y": 424, "origin": "viewport" },
+        { "type": "pointerDown", "button": 0 },
+        { "type": "pause", "duration": 100 },
+        { "type": "pointerUp", "button": 0 }
+      ]
+    }]
+  }'
+```
+
+Expected output:
+
+```json
+{"value":null}
+```
+
+Confirm Settings opened:
+
+```bash
+curl -fsS "http://127.0.0.1:4723/session/$SID/source" \
+  | python3 -c 'import sys,json; print(json.load(sys.stdin)["value"])' \
+  | grep 'bundleId="com.apple.Preferences"'
+```
+
+Expected output shape:
+
+```text
+<XCUIElementTypeApplication ... name="Settings" ... bundleId="com.apple.Preferences">
+```
+
+### When to repeat iPhone trust
+
+Do not repeat the iPhone trust steps for normal unplug/replug. Repeat the trust flow only when something material changes:
+
+- WebDriverAgent is signed with a different Apple team or certificate.
+- `appium:updatedWDABundleId` changes.
+- Xcode recreates signing with a different provisioning profile.
+- The iPhone is erased, reset, or its developer trust settings are reset.
+- Developer Mode is disabled and re-enabled.
+- WebDriverAgent is deleted and reinstalled with different signing.
+
+### Fast recovery after reconnect
+
+If the device is not found:
+
+1. Unlock the iPhone.
+2. Wait 10-20 seconds.
+3. Rerun `xcrun xctrace list devices`.
+4. Rerun `pymobiledevice3 usbmux list`.
+5. Unplug and replug the USB cable.
+
+If Appium cannot create a session:
+
+1. Delete any old session if you still have its ID.
+2. Stop Appium with `Ctrl+C`.
+3. Confirm the phone is unlocked.
+4. Start Appium again.
+5. Create a fresh session.
+
+Rebuild or re-sign WebDriverAgent only after the reconnect checks pass but session creation fails with a clear signing, provisioning, or WebDriverAgent launch error.
+
 ## Reliability Test
 
 Before building a wrapper, MCP bridge, or WDIO layer, prove raw Appium works.
