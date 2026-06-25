@@ -59,6 +59,7 @@ Treat each phase as a gate. If a phase fails, fix that phase before moving forwa
 - Appium runs an HTTP automation server on the Mac.
 - The XCUITest driver builds and installs WebDriverAgent on the iPhone.
 - WebDriverAgent uses Apple's XCTest APIs to interact with the phone.
+- WebDriverAgent can also expose a live MJPEG screen stream on the Mac for faster visual inspection than repeated Appium screenshots.
 - The phone remains a normal non-jailbroken iPhone.
 - The USB cable stays connected during the setup and the first reliability test.
 
@@ -77,6 +78,7 @@ Treat each phase as a gate. If a phase fails, fix that phase before moving forwa
 - **Developer Mode**: iOS setting required on iOS 16 and later before development-signed apps can run reliably.
 - **Safari Web Inspector**: iPhone Safari setting that allows the Mac-side Web Inspector protocol to see Safari tabs. Appium needs it for Mobile Safari web-context testing.
 - **WebDriverAgent**: The XCTest server app that Appium installs on the phone.
+- **MJPEG stream**: A live sequence of JPEG screen frames served by WebDriverAgent. It is useful for watching fast-changing screens while Appium commands still run through the normal Appium session.
 - **UDID**: The unique device identifier. Treat it as sensitive and mask it in public docs.
 
 ## Known Verified Versions
@@ -688,6 +690,7 @@ Use these capabilities deliberately:
 | `appium:xcodeSigningId` | Signing identity. For this setup, use `Apple Development`. |
 | `appium:updatedWDABundleId` | Unique bundle ID Appium uses for WebDriverAgentRunner. |
 | `appium:wdaLaunchTimeout` | Gives WebDriverAgent enough time to build, install, and start on a real iPhone. |
+| `appium:mjpegServerPort` | Local Mac port where Appium forwards WDA's MJPEG screenshot stream. Default is `9100`; set it explicitly so the URL is predictable. |
 | `appium:newCommandTimeout` | Keeps the session alive during slower manual checks. |
 | `appium:noReset` | Avoids resetting app/device state between sessions. |
 
@@ -714,6 +717,7 @@ curl -sS -X POST http://127.0.0.1:4723/session \
         "appium:xcodeSigningId": "Apple Development",
         "appium:updatedWDABundleId": "<unique-wda-bundle-id>",
         "appium:wdaLaunchTimeout": 120000,
+        "appium:mjpegServerPort": 9100,
         "appium:newCommandTimeout": 120
       },
       "firstMatch": [{}]
@@ -759,7 +763,47 @@ Expected output:
 iphone-appium-screenshot.png: PNG image data
 ```
 
-### 18. Read UI source
+### 18. Watch the live iPhone screen stream
+
+For slow setup checks, one screenshot is enough. For fast-changing apps or games, use WebDriverAgent's MJPEG stream instead.
+
+This stream is enabled by the XCUITest/WebDriverAgent stack when WDA is running. WDA runs on the iPhone as `WebDriverAgentRunner`; the XCUITest driver forwards WDA's MJPEG stream back to the Mac. The URL you open on the Mac is a forwarded local endpoint, not a separate video server rendered by Appium.
+
+The stream is MJPEG, not H.264 or AirPlay-style screen mirroring. In practice, it is a continuous sequence of JPEG screenshots. It is useful for live debugging and visual observation, while all control commands still go through the normal Appium session.
+
+With the session running, check the three local ports:
+
+```bash
+curl -sS http://127.0.0.1:4723/status
+curl -sS http://127.0.0.1:8100/status | python3 -m json.tool | sed -n '1,40p'
+curl -sS --max-time 2 -I http://127.0.0.1:9100/ | sed -n '1,20p'
+```
+
+Expected output shape:
+
+```text
+HTTP/1.0 200 OK
+Server: WDA MJPEG Server
+Content-Type: multipart/x-mixed-replace; boundary=--BoundaryString
+```
+
+Open the stream in a browser or another viewer:
+
+```text
+http://127.0.0.1:9100/
+```
+
+How to read the ports:
+
+- `4723` is the Appium server. Send WebDriver commands here.
+- `8100` is WebDriverAgent's HTTP endpoint, proxied locally by Appium for a real device.
+- `9100` is the Mac-side forwarded port for WebDriverAgent's MJPEG screenshot stream. The default is `9100` unless you set `appium:mjpegServerPort` to another value.
+
+The MJPEG stream is for watching the screen. Continue sending taps, swipes, text input, and app commands through Appium on `4723`.
+
+If port `9100` is already busy, choose a different value such as `9110` in `appium:mjpegServerPort`, then open `http://127.0.0.1:9110/`.
+
+### 19. Read UI source
 
 ```bash
 curl -sS "http://127.0.0.1:4723/session/$SID/source" \
@@ -775,7 +819,7 @@ Expected output shape:
 }
 ```
 
-### 19. Tap a harmless coordinate
+### 20. Tap a harmless coordinate
 
 This example taps near the center of the screen. Use it only on a harmless screen such as Settings.
 
@@ -803,7 +847,7 @@ Expected output:
 {"value":null}
 ```
 
-### 20. Press Home
+### 21. Press Home
 
 ```bash
 curl -sS -X POST "http://127.0.0.1:4723/session/$SID/execute/sync" \
@@ -817,7 +861,7 @@ Expected output:
 {"value":null}
 ```
 
-### 21. Open Settings again
+### 22. Open Settings again
 
 ```bash
 curl -sS -X POST "http://127.0.0.1:4723/session/$SID/appium/device/activate_app" \
@@ -831,7 +875,7 @@ Expected output:
 {"value":null}
 ```
 
-### 22. End the session
+### 23. End the session
 
 Always delete the Appium session when finished:
 
@@ -851,7 +895,7 @@ Stop the Appium server with `Ctrl+C`.
 
 After native iPhone control works, test Mobile Safari as a separate web flow. Do not debug Safari web testing until the native screenshot and source checks above already pass.
 
-### 23. Create a Safari session
+### 24. Create a Safari session
 
 For a pure Safari session, many examples use `browserName: "Safari"`. On a physical iPhone, a more explicit and reliable pattern is:
 
@@ -921,7 +965,7 @@ BASE="http://127.0.0.1:4723"
 export ELEMENT_KEY="element-6066-11e4-a52e-4f735466cecf"
 ```
 
-### 24. Switch to the Safari web context
+### 25. Switch to the Safari web context
 
 List contexts:
 
@@ -978,7 +1022,7 @@ Expected output shape:
 {"value":"WEBVIEW_661.1"}
 ```
 
-### 25. Verify navigation, title, and source
+### 26. Verify navigation, title, and source
 
 Navigate to a known page:
 
@@ -1033,7 +1077,7 @@ Verified Safari screenshot:
 
 ![iPhone Safari Example Domain page controlled by Appium](assets/ios-real-device-appium-control/iphone-safari-web-test-example-success.png){ .iphone-screenshot }
 
-### 26. Verify CSS selectors, typing, and click
+### 27. Verify CSS selectors, typing, and click
 
 Open Selenium's public test form:
 
@@ -1172,7 +1216,7 @@ Create a new Appium session using the same capabilities from [Create a real-devi
 SID="<appium-session-id>"
 ```
 
-For Mobile Safari website testing, create the Safari session from [Create a Safari session](#23-create-a-safari-session) and switch to the Mobile Safari web context again after every fresh session.
+For Mobile Safari website testing, create the Safari session from [Create a Safari session](#24-create-a-safari-session) and switch to the Mobile Safari web context again after every fresh session.
 
 ### Known-good reconnect test
 
@@ -1346,6 +1390,7 @@ The setup is complete only when every item below is true:
 - Appium starts on `http://127.0.0.1:4723`.
 - A real-device Appium session is created successfully.
 - Screenshot capture returns a PNG.
+- The live MJPEG stream is reachable on the configured local port, usually `http://127.0.0.1:9100/`.
 - UI source returns XCTest XML.
 - A harmless tap or app launch changes the phone state.
 - For Safari testing, `/contexts` returns a `WEBVIEW_...` context whose `bundleId` is `com.apple.mobilesafari`.
@@ -1365,6 +1410,7 @@ If any item fails, use the troubleshooting table below from the first failed che
 | WDA launch times out | Phone locked or Developer Mode off | Unlock phone, confirm Developer Mode is on, retry session creation. |
 | `appium driver list --installed` does not show `xcuitest` | Driver installation | Run `appium driver install xcuitest`. |
 | Appium hangs during a command | WDA or XCTest is stuck | Delete the session, stop Appium, unlock phone, restart Appium. |
+| `http://127.0.0.1:9100/` does not show the live screen stream | MJPEG port conflict, WDA not running, or the stream was not forwarded | Confirm the Appium session is active, check `curl -I http://127.0.0.1:9100/`, and set a unique `appium:mjpegServerPort` such as `9110` if `9100` is already busy. |
 | Device disappears during test | USB instability | Use a known-good cable and avoid USB hubs during first setup. |
 | Xcode asks for iOS platform support | Missing Xcode device support | Let Xcode install required platform/device support components. |
 | Safari session fails with `The remote debugger did not return any connected web applications` | Safari Web Inspector is off, Safari has no debuggable page, or the web context is not ready | Turn on `Settings -> Safari -> Advanced -> Web Inspector`, open Safari, and use `webviewConnectTimeout` only after Web Inspector is enabled. |
@@ -1383,6 +1429,7 @@ If any item fails, use the troubleshooting table below from the first failed che
 - [Appium Install Appium](https://appium.io/docs/en/latest/quickstart/install/): Appium installation and server startup.
 - [Appium XCUITest Device Preparation](https://appium.github.io/appium-xcuitest-driver/latest/preparation/real-device-config/): real-device requirements such as trusted device, Developer Mode, UI Automation, and provisioning.
 - [Appium XCUITest Capabilities](https://appium.github.io/appium-xcuitest-driver/latest/reference/capabilities/): `xcodeOrgId`, `xcodeSigningId`, `updatedWDABundleId`, WDA timeout capabilities, and Safari web-context capabilities.
+- [Appium XCUITest MJPEG Guide](https://github.com/appium/appium-xcuitest-driver/blob/master/docs/guides/mjpeg.md): WDA MJPEG stream behavior, default port `9100`, port forwarding, and parallel-session port guidance.
 - [Homebrew Installation](https://brew.sh/): Homebrew install command and shell setup.
 - [Apple Xcode](https://developer.apple.com/xcode/): Xcode toolchain overview.
 
