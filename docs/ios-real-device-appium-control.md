@@ -388,6 +388,19 @@ Enable UI Automation
 
 ![iPhone Developer settings showing Enable UI Automation](assets/ios-real-device-appium-control/iphone-developer-ui-automation.png)
 
+Why this is required:
+
+- `Enable UI Automation` allows XCTest-based tools to inspect and control the iPhone UI.
+- Appium does not directly control the iPhone screen by itself. Appium talks to WebDriverAgent, and WebDriverAgent uses Apple's XCTest UI automation APIs.
+- If UI Automation is disabled, WebDriverAgent may still install, but Appium commands such as screenshot, source, tap, swipe, and app launch can fail or behave inconsistently.
+- Keep this setting enabled when using Appium with the XCUITest driver, WebDriverAgentRunner, XCTest UI tests, or any local tool that needs to automate visible iPhone UI.
+
+This setting is different from `Developer Mode`:
+
+- `Developer Mode` allows development-signed apps such as WebDriverAgentRunner to run.
+- `Enable UI Automation` allows XCTest automation to interact with the visible UI.
+- For normal Appium real-device use, both should be enabled.
+
 ### 11. Trust the WebDriverAgent developer app
 
 After WebDriverAgent is installed for the first time, open:
