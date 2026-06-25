@@ -19,6 +19,38 @@ The working end state is:
 
 This guide assumes the engineer is using a Mac and iPhone for the first time.
 
+## Before You Start
+
+Plan for 60-90 minutes for the first successful setup. Most of that time is Xcode installation, account signing, and resolving first-run iPhone prompts. Later reconnects should take only a few minutes.
+
+You need:
+
+- A Mac with administrator access and a stable internet connection.
+- Xcode installed from the Mac App Store.
+- An Apple ID that can be added to Xcode. A free personal team is enough for local testing.
+- A physical iPhone, USB cable, and the phone passcode.
+- Developer Mode enabled on the iPhone.
+- The iPhone kept unlocked during setup and first verification.
+- Terminal access for Homebrew, Node.js, Appium, and diagnostic commands.
+
+Do not begin Appium session debugging until Xcode can see the iPhone and WebDriverAgent signing is clean. Appium cannot work around an untrusted phone, missing Developer Mode, or broken signing.
+
+## Setup Map
+
+Follow the setup in this order:
+
+1. Install Xcode and command line tools.
+2. Install Homebrew, Node.js, Appium, and iOS diagnostic tools.
+3. Add an Apple account and create an Apple Development certificate in Xcode.
+4. Connect the iPhone, trust the Mac, enable Developer Mode, and enable UI Automation.
+5. Configure and sign WebDriverAgentRunner.
+6. Start Appium on localhost.
+7. Create a real-device session.
+8. Verify screenshot, UI source, tap, Home, app launch, and clean session deletion.
+9. Run the reconnect checklist after unplug, restart, or long idle periods.
+
+Treat each phase as a gate. If a phase fails, fix that phase before moving forward.
+
 ## What This Setup Does
 
 - Appium runs an HTTP automation server on the Mac.
@@ -42,6 +74,24 @@ This guide assumes the engineer is using a Mac and iPhone for the first time.
 - **Developer Mode**: iOS setting required on iOS 16 and later before development-signed apps can run reliably.
 - **WebDriverAgent**: The XCTest server app that Appium installs on the phone.
 - **UDID**: The unique device identifier. Treat it as sensitive and mask it in public docs.
+
+## Known Verified Versions
+
+The screenshots and commands in this guide were verified with this stack:
+
+| Component | Verified value |
+| --- | --- |
+| macOS | Mac with Xcode installed |
+| Xcode | 26.0.1 |
+| iPhone | iPhone 8 |
+| iOS | 16.7.12 |
+| Node.js | 24.x |
+| npm | 11.x |
+| Appium | 3.5.2 |
+| Appium XCUITest driver | 11.14.x |
+| Connection | USB |
+
+Exact versions can differ. The important part is that Xcode detects the phone, Appium has the `xcuitest` driver installed, and WebDriverAgent can be signed for the same iPhone.
 
 ## Final Configuration
 
@@ -540,17 +590,19 @@ Stop and fix signing first if any checklist item fails. Reinstalling Appium or c
 Run:
 
 ```bash
-appium --log-level info --base-path /
+appium --address 127.0.0.1 --port 4723 --log-level info
 ```
 
 Expected output shape:
 
 ```text
 [Appium] Welcome to Appium v3.5.2
-[Appium] Appium REST http interface listener started on http://0.0.0.0:4723
+[Appium] Appium REST http interface listener started on http://127.0.0.1:4723
+[Appium] Available drivers:
+[Appium]   - xcuitest@...
 ```
 
-Leave this terminal running.
+Leave this terminal running. Binding Appium to `127.0.0.1` keeps the automation server local to the Mac. Do not expose Appium on a network interface unless you intentionally need remote access and have a security boundary around it.
 
 From another terminal, check server status:
 
@@ -971,6 +1023,27 @@ Pass condition:
 - Screenshots and source are returned in every cycle.
 
 On this Mac and iPhone, the raw Appium stack completed 10 consecutive cycles successfully on 2026-06-25.
+
+## Final Success Checklist
+
+The setup is complete only when every item below is true:
+
+- Xcode lists the physical iPhone under connected devices.
+- `xcrun xctrace list devices` shows the iPhone UDID.
+- `pymobiledevice3 usbmux list` shows `ConnectionType: USB`.
+- The iPhone has trusted the Mac.
+- Developer Mode is enabled on the iPhone.
+- `Enable UI Automation` is enabled on the iPhone.
+- WebDriverAgentRunner has no red signing error in Xcode.
+- Appium starts on `http://127.0.0.1:4723`.
+- A real-device Appium session is created successfully.
+- Screenshot capture returns a PNG.
+- UI source returns XCTest XML.
+- A harmless tap or app launch changes the phone state.
+- The Appium session can be deleted cleanly.
+- A reconnect test passes after unplug/replug or restart.
+
+If any item fails, use the troubleshooting table below from the first failed checkpoint. Do not rebuild the whole stack until the specific failing layer is identified.
 
 ## Troubleshooting
 
