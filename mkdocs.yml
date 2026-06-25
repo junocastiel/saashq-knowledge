@@ -35,4 +35,5 @@ nav:
   - Cloudflare Email Routing: cloudflare-email-routing.md
   - Cloudflare Tunnel Local Preview: cloudflare-tunnel-local-preview.md
   - Fleet MDM: fleet-mdm.md
+  - iPhone Appium Control: ios-real-device-appium-control.md
   - Contribution Guide: page-template.md

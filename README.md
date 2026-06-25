@@ -5,7 +5,9 @@ This folder contains a MkDocs Material static knowledge website.
 The site is intentionally small right now:
 
 - Cloudflare Email Routing
+- Cloudflare Tunnel Local Preview
 - Fleet MDM
+- iPhone Appium Control
 - Contribution Guide and Page Template
 
 ## Edit Content
