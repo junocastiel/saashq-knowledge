@@ -243,6 +243,80 @@ Add three behavioral rules:
 
 When a live check contradicts the corpus, lead with the correction, answer from the current source, then update the related brain entry. This closes the stale-claim loop instead of allowing the nightly distillation to repeat an old assertion.
 
+## Fictionalized Real-World Examples
+
+The following examples are fictionalized composites, not transcripts. Names, project labels, ticket keys, dates, counts, links, and operational details are invented. They demonstrate the response pattern without exposing personal or company information.
+
+### Correct a Stale Priority Recommendation
+
+**Question**
+
+> What should I prioritize today?
+
+**Corpus evidence**
+
+- `SAMPLE-104` says a pull-request review blocks the release
+- The project file lists the review as the highest priority
+- `Last confirmed` is 16 days old
+
+**Live verification**
+
+The ticket system shows `SAMPLE-104` and its related task as completed more than a week ago. A newer raw entry shows that the regression plan still needs approval.
+
+**Claude response**
+
+> Prioritize the regression-plan review for Project Cedar. The corpus ranked the pull request first, but live verification shows both blocking tickets are complete. **Evidence:** current ticket status and yesterday's project update. **Inference:** the regression approval is now the remaining release dependency. **Confidence:** high.
+
+**Corpus update**
+
+Mark the old blockers complete, attach the current ticket evidence, and promote the regression-plan approval in the project file.
+
+### Apply Known Constraints to a Generic Question
+
+**Question**
+
+> How should I reduce the runtime of our regression suite?
+
+**Corpus evidence**
+
+- The suite takes several hours on one worker
+- Two workers are available during the release window
+- One licensed setup stage cannot run concurrently
+- Recent failures cluster in three independent test groups
+
+**Claude response**
+
+> Keep the licensed setup stage serial, then split the three independent groups across both workers. Start with historical duration rather than test count so each worker receives a similar load. **Evidence:** worker inventory, license constraint, and recent run summaries. **Inference:** balanced post-setup sharding reduces idle time without creating a license conflict. **Confidence:** medium until three trial runs confirm stable timing.
+
+**Corpus update**
+
+Record the trial configuration and measured runtime after each run. Replace the recommendation if the new evidence shows an unstable shard.
+
+### Surface a Risk Hidden Across Systems
+
+**Question**
+
+> Give me the current release status and the risks I should raise.
+
+**Corpus evidence**
+
+- The plan shows several delivered items and several tasks in progress
+- One on-hold ticket quietly reduces the committed test scope
+- End-to-end testing has no recent activity
+- The target date is less than three weeks away
+
+**Live verification**
+
+The ticket system confirms the on-hold status and unchanged end-to-end task. The latest calendar entry confirms the target review date.
+
+**Claude response**
+
+> The release is progressing, with two risks to raise. First, the on-hold ticket reduces the test scope without a recorded approval. Second, end-to-end testing has not started before the upcoming review. **Evidence:** current ticket status, release plan, and review date. **Inference:** both items can affect release confidence even though completed-work counts look healthy. **Confidence:** high on status, medium on schedule impact.
+
+**Corpus update**
+
+Write the verified statuses and review date to the project file. Add owners and follow-up dates only after a person confirms them.
+
 ## Verification
 
 The system is ready for routine use when all checks pass:
