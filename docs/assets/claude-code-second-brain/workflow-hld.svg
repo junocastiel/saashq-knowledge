@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1020" role="img" aria-labelledby="title desc">
+  <title id="title">High-level personal second brain workflow</title>
+  <desc id="desc">Work sources flow through capture, raw storage, distillation, and brain files into Claude sessions. Stale claims are checked against live systems and corrections return to brain files.</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1976d2"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/>
+    </marker>
+    <style>
+      .node { fill: #f7f9fa; stroke: #546e7a; stroke-width: 2; }
+      .node-primary { fill: #eef6ff; stroke: #1976d2; stroke-width: 2; }
+      .node-live { fill: #fff7e6; stroke: #d97706; stroke-width: 2; }
+      .label { fill: #263238; font: 600 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .detail { fill: #546e7a; font: 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .flow { fill: none; stroke: #1976d2; stroke-width: 3; marker-end: url(#arrow-blue); }
+      .verify { fill: none; stroke: #d97706; stroke-width: 3; stroke-dasharray: 8 7; marker-end: url(#arrow-amber); }
+      .edge-label { fill: #9a5b00; font: 600 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    </style>
+  </defs>
+
+  <rect class="node" x="130" y="35" width="460" height="94" rx="8"/>
+  <text class="label" x="360" y="75">Work Sources</text>
+  <text class="detail" x="360" y="104">Chat · mail · calendar · tickets · wiki · GitHub</text>
+
+  <path class="flow" d="M 360 129 L 360 170"/>
+
+  <rect class="node" x="130" y="174" width="460" height="94" rx="8"/>
+  <text class="label" x="360" y="214">Capture Layer</text>
+  <text class="detail" x="360" y="243">Scripts, APIs, connectors, checkpoints</text>
+
+  <path class="flow" d="M 360 268 L 360 309"/>
+
+  <rect class="node" x="130" y="313" width="460" height="94" rx="8"/>
+  <text class="label" x="360" y="353">Raw Corpus</text>
+  <text class="detail" x="360" y="382">Dated, append-only Markdown evidence</text>
+
+  <path class="flow" d="M 360 407 L 360 448"/>
+
+  <rect class="node" x="130" y="452" width="460" height="94" rx="8"/>
+  <text class="label" x="360" y="492">Distillation Layer</text>
+  <text class="detail" x="360" y="521">One daily pass with provenance</text>
+
+  <path class="flow" d="M 360 546 L 360 587"/>
+
+  <rect class="node-primary" x="130" y="591" width="460" height="94" rx="8"/>
+  <text class="label" x="360" y="631">Brain Files</text>
+  <text class="detail" x="360" y="660">Context card · decisions · people · projects</text>
+
+  <path class="flow" d="M 360 685 L 360 726"/>
+
+  <rect class="node-primary" x="130" y="730" width="460" height="94" rx="8"/>
+  <text class="label" x="360" y="770">Claude Sessions</text>
+  <text class="detail" x="360" y="799">Ambient context plus evidence-linked answers</text>
+
+  <path class="verify" d="M 360 824 L 360 865"/>
+  <text class="edge-label" x="378" y="852">verify stale claims</text>
+
+  <rect class="node-live" x="130" y="869" width="460" height="94" rx="8"/>
+  <text class="label" x="360" y="909">Live Systems</text>
+  <text class="detail" x="360" y="938">Current ticket, document, or source status</text>
+
+  <path class="verify" d="M 590 916 C 676 916 676 638 606 638"/>
+  <text class="edge-label" x="603" y="782" transform="rotate(-90 603 782)">record correction</text>
+</svg>

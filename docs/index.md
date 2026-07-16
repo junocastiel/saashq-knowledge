@@ -10,6 +10,7 @@ The goal is not to learn HTML. The goal is to record what was configured, why it
 - [Cloudflare Tunnel Local Preview](cloudflare-tunnel-local-preview.md): how to expose a local website through a temporary Cloudflare Tunnel.
 - [Fleet MDM](fleet-mdm.md): how Fleet MDM is running on macOS with Docker or OrbStack, Cloudflare Tunnel, and Android Enterprise.
 - [iPhone Appium Control](ios-real-device-appium-control.md): how to control a physical iPhone from macOS with Appium, XCUITest, and WebDriverAgent.
+- [Claude Code Second Brain](claude-code-second-brain.md): how to capture, distill, and verify work context in a local Markdown corpus for Claude Code.
 
 ## How to Add a Page
 

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 1840" role="img" aria-labelledby="title desc">
+  <title id="title">Low-level capture, distillation, and correction workflow</title>
+  <desc id="desc">The workflow reads a checkpoint, fetches and deduplicates new records, writes raw evidence, updates state, distills provenance, refreshes the context card, answers from brain files, and live-checks stale claims before recording corrections.</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1976d2"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/>
+    </marker>
+    <style>
+      .node { fill: #f7f9fa; stroke: #546e7a; stroke-width: 2; }
+      .node-primary { fill: #eef6ff; stroke: #1976d2; stroke-width: 2; }
+      .node-live { fill: #fff7e6; stroke: #d97706; stroke-width: 2; }
+      .decision { fill: #fffdf5; stroke: #d97706; stroke-width: 2; }
+      .label { fill: #263238; font: 600 21px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .detail { fill: #546e7a; font: 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .flow { fill: none; stroke: #1976d2; stroke-width: 3; marker-end: url(#arrow-blue); }
+      .verify { fill: none; stroke: #d97706; stroke-width: 3; stroke-dasharray: 8 7; marker-end: url(#arrow-amber); }
+      .edge-label { fill: #9a5b00; font: 600 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    </style>
+  </defs>
+
+  <rect class="node" x="100" y="30" width="560" height="82" rx="8"/>
+  <text class="label" x="380" y="66">Read Source Checkpoint</text>
+  <text class="detail" x="380" y="91">Use the source-specific cursor in state.json</text>
+  <path class="flow" d="M 380 112 L 380 143"/>
+
+  <rect class="node" x="100" y="147" width="560" height="82" rx="8"/>
+  <text class="label" x="380" y="183">Fetch Newer Items</text>
+  <text class="detail" x="380" y="208">Request only fields needed for context</text>
+  <path class="flow" d="M 380 229 L 380 260"/>
+
+  <rect class="node" x="100" y="264" width="560" height="82" rx="8"/>
+  <text class="label" x="380" y="300">Normalize and Deduplicate</text>
+  <text class="detail" x="380" y="325">Use source plus native ID as the key</text>
+  <path class="flow" d="M 380 346 L 380 377"/>
+
+  <rect class="node-primary" x="100" y="381" width="560" height="82" rx="8"/>
+  <text class="label" x="380" y="417">Append Raw Evidence</text>
+  <text class="detail" x="380" y="442">Write to the dated source Markdown file</text>
+  <path class="flow" d="M 380 463 L 380 494"/>
+
+  <rect class="node" x="100" y="498" width="560" height="82" rx="8"/>
+  <text class="label" x="380" y="534">Advance state.json</text>
+  <text class="detail" x="380" y="559">Update only after the raw write succeeds</text>
+  <path class="flow" d="M 380 580 L 380 611"/>
+
+  <rect class="node" x="100" y="615" width="560" height="82" rx="8"/>
+  <text class="label" x="380" y="651">Run Daily Distillation</text>
+  <text class="detail" x="380" y="676">Combine new raw items in one judgment pass</text>
+  <path class="flow" d="M 380 697 L 380 728"/>
+
+  <rect class="node-primary" x="100" y="732" width="560" height="82" rx="8"/>
+  <text class="label" x="380" y="768">Write Provenance</text>
+  <text class="detail" x="380" y="793">Store evidence path and last-confirmed date</text>
+  <path class="flow" d="M 380 814 L 380 845"/>
+
+  <rect class="node-primary" x="100" y="849" width="560" height="82" rx="8"/>
+  <text class="label" x="380" y="885">Refresh Context Card</text>
+  <text class="detail" x="380" y="910">Keep the ambient summary within its size cap</text>
+  <path class="flow" d="M 380 931 L 380 962"/>
+
+  <rect class="node" x="100" y="966" width="560" height="82" rx="8"/>
+  <text class="label" x="380" y="1002">Load Through CLAUDE.md</text>
+  <text class="detail" x="380" y="1027">Import the context card at session start</text>
+  <path class="flow" d="M 380 1048 L 380 1079"/>
+
+  <rect class="node-primary" x="100" y="1083" width="560" height="82" rx="8"/>
+  <text class="label" x="380" y="1119">Answer From Brain Files</text>
+  <text class="detail" x="380" y="1144">Link claims to captured evidence</text>
+  <path class="flow" d="M 380 1165 L 380 1201"/>
+
+  <path class="decision" d="M 380 1205 L 525 1291 L 380 1377 L 235 1291 z"/>
+  <text class="label" x="380" y="1284">Claim Stale</text>
+  <text class="detail" x="380" y="1310">or status-critical?</text>
+
+  <path class="flow" d="M 235 1291 L 120 1291 L 120 1432"/>
+  <text class="detail" x="153" y="1273">No</text>
+  <rect class="node-primary" x="30" y="1436" width="290" height="92" rx="8"/>
+  <text class="label" x="175" y="1475">Return Cited Answer</text>
+  <text class="detail" x="175" y="1502">Use current corpus evidence</text>
+
+  <path class="verify" d="M 525 1291 L 640 1291 L 640 1432"/>
+  <text class="edge-label" x="591" y="1273">Yes</text>
+  <rect class="node-live" x="440" y="1436" width="290" height="92" rx="8"/>
+  <text class="label" x="585" y="1475">Verify Live Source</text>
+  <text class="detail" x="585" y="1502">Read the current system state</text>
+  <path class="verify" d="M 585 1528 L 585 1570"/>
+
+  <rect class="node-live" x="440" y="1574" width="290" height="92" rx="8"/>
+  <text class="label" x="585" y="1613">Record Correction</text>
+  <text class="detail" x="585" y="1640">Update brain files and evidence</text>
+
+  <path class="flow" d="M 175 1528 L 175 1731 L 356 1731"/>
+  <path class="verify" d="M 585 1666 L 585 1731 L 404 1731"/>
+  <rect class="node-primary" x="100" y="1735" width="560" height="82" rx="8"/>
+  <text class="label" x="380" y="1771">Return Current, Cited Answer</text>
+  <text class="detail" x="380" y="1796">Preserve the corrected state for the next session</text>
+</svg>
